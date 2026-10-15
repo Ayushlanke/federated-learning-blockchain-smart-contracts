@@ -1,0 +1,12 @@
+G3 confirmatory: 312 runs, 5 workers, rounds=25
+   15/312  elapsed   8.2m  eta 163.1m
+   30/312  elapsed  16.2m  eta 152.7m
+   45/312  elapsed  24.5m  eta 145.5m
+   60/312  elapsed  33.2m  eta 139.3m
+   75/312  elapsed  41.2m  eta 130.3m
+   90/312  elapsed  49.5m  eta 122.0m
+  105/312  elapsed  58.0m  eta 114.4m
+  120/312  elapsed  67.0m  eta 107.2m
+  135/312  elapsed  78.6m  eta 103.1m
+  150/312  elapsed  89.2m  eta  96.4m
+  165/312  elapsed 101.0m  eta  89.9m

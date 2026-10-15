@@ -1,0 +1,40 @@
+# --- Python ---
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# --- Data (never committed; fetched by scripts/fetch_data.py) ---
+data/raw/
+data/processed/
+*.tar.gz
+*.npz
+
+# --- Experiment outputs ---
+# Raw per-trial data is bulky and regenerable -> ignored.
+# Curated figures and summary tables ARE committed: the README and final report
+# embed them, and a portfolio repo must show results without a rerun.
+results/runs/
+*.ledger.jsonl
+
+# --- OS / editor ---
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
+
+# --- Research working material: NOT committed ---
+# research/papers/ holds extracted full text of copyrighted papers (personal
+# research use only). research/_salvage/ holds raw search-engine dumps.
+# Neither is redistributable and neither belongs in a portfolio repo.
+# Citations live in research/RELATED_WORK.md instead.
+research/papers/
+research/_salvage/
+
+# Personal Claude Code overrides (local plugin/hook config, not project config)
+.claude/settings.local.json

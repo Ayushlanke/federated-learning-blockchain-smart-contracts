@@ -1,0 +1,8 @@
+# BC-FL-SRV — project-local only (installed into C:\Study\.venv)
+# torch/numpy/scipy/scikit-learn/pandas are READ from the base interpreter
+# via --system-site-packages; they are NOT installed by this project.
+cryptography==50.0.1
+pytest==9.1.1
+pytest-cov
+matplotlib==3.11.1
+pypdf==6.16.2

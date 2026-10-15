@@ -1,0 +1,25 @@
+G3 confirmatory: 312 runs, 5 workers, rounds=25
+   15/312  elapsed   5.9m  eta 117.5m
+   30/312  elapsed  12.7m  eta 119.5m
+   45/312  elapsed  19.5m  eta 115.9m
+   60/312  elapsed  27.1m  eta 114.0m
+   75/312  elapsed  34.0m  eta 107.6m
+   90/312  elapsed  40.9m  eta 100.8m
+  105/312  elapsed  48.2m  eta  95.0m
+  120/312  elapsed  55.6m  eta  89.0m
+  135/312  elapsed  63.8m  eta  83.7m
+  150/312  elapsed  71.9m  eta  77.6m
+  165/312  elapsed  79.7m  eta  71.0m
+  180/312  elapsed  87.8m  eta  64.4m
+  195/312  elapsed  96.0m  eta  57.6m
+  210/312  elapsed 103.8m  eta  50.4m
+  225/312  elapsed 112.3m  eta  43.4m
+  240/312  elapsed 120.0m  eta  36.0m
+  255/312  elapsed 128.4m  eta  28.7m
+  270/312  elapsed 136.9m  eta  21.3m
+  285/312  elapsed 144.9m  eta  13.7m
+  300/312  elapsed 153.5m  eta   6.1m
+  312/312  elapsed 160.5m  eta   0.0m
+
+Total 160.5 min -> C:\Study\results\runs\g3_20260904-163310
+  WARNING: Working tree was DIRTY: this result cannot be reproduced from the committed repository state.

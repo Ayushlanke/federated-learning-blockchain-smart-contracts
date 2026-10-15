@@ -1,0 +1,15 @@
+matrix names 312 cells over 280 distinct configurations; 32 are repeated control arms
+resume: 165 runs already recorded, 159 matched, 121 remaining
+G3 confirmatory: 121 runs, 5 workers, rounds=25
+   15/121  elapsed  14.5m  eta 102.5m
+   30/121  elapsed  21.6m  eta  65.4m
+   45/121  elapsed  29.3m  eta  49.5m
+   60/121  elapsed  37.5m  eta  38.1m
+   75/121  elapsed  45.1m  eta  27.7m
+   90/121  elapsed  52.8m  eta  18.2m
+  105/121  elapsed  60.9m  eta   9.3m
+  120/121  elapsed  68.0m  eta   0.6m
+  121/121  elapsed  68.5m  eta   0.0m
+
+Total 68.5 min -> C:\Study\results\runs\g3_20260904-213216
+  WARNING: Working tree was DIRTY: this result cannot be reproduced from the committed repository state.

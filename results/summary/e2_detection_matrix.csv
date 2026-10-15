@@ -1,0 +1,15 @@
+attack,class,detected_bcflsrv,detected_b1_signed_log,detected_b2_self_attested,expected_bcflsrv
+entry edit,transcript,True,True,True,True
+entry reorder,transcript,True,True,True,True
+entry deletion,transcript,True,True,True,True
+truncation vs known root,transcript,True,True,True,True
+admitted without submission,AG1,True,False,True,True
+forged admission set,AG1,True,False,False,True
+below-threshold attestation,AG1,True,False,False,True
+outsider signers,AG1,True,False,False,True
+dishonest rejection (aggregator alone),AG1,True,False,False,True
+cross-round attestation replay,AG1,True,False,False,True
+selective drop (public auditor),AG1,False,False,False,False
+selective drop (client self-audit),AG1,True,False,False,True
+split view (1 observer),AG3,False,False,False,False
+split view (2 observers),AG3,True,True,True,True

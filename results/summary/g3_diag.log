@@ -1,0 +1,18 @@
+diagnostic: 15 runs on DEV seeds [100, 101, 102, 103, 104]
+  1/15  2.7m
+  2/15  3.0m
+  3/15  3.0m
+  4/15  3.0m
+  5/15  3.1m
+  6/15  5.7m
+  7/15  5.7m
+  8/15  5.9m
+  9/15  5.9m
+  10/15  5.9m
+  11/15  8.6m
+  12/15  8.9m
+  13/15  8.9m
+  14/15  9.0m
+  15/15  9.0m
+
+375 round-observations -> C:\Study\results\summary\g3_diagnostic.json

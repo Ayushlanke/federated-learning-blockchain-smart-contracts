@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BC-FL-SRV Research & Testing Platform</title>
+  <link rel="stylesheet" href="/static/style.css?v=2.0.2">
+</head>
+<body>
+
+  <!-- ── Sidebar Navigation ────────────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-badge">FL</div>
+      <div class="logo-title">
+        <h1>BC-FL-SRV</h1>
+        <span>Research Platform</span>
+      </div>
+    </div>
+
+    <ul class="nav-menu">
+      <li class="nav-item active" data-tab="dashboard">
+        <span class="nav-icon">📊</span>
+        <span>Dashboard</span>
+      </li>
+      <li class="nav-item" data-tab="clients">
+        <span class="nav-icon">👥</span>
+        <span>FL Clients</span>
+      </li>
+      <li class="nav-item" data-tab="training">
+        <span class="nav-icon">⚡</span>
+        <span>FL Training Room</span>
+      </li>
+      <li class="nav-item" data-tab="blockchain">
+        <span class="nav-icon">⛓️</span>
+        <span>Blockchain Explorer</span>
+      </li>
+      <li class="nav-item" data-tab="model">
+        <span class="nav-icon">🧠</span>
+        <span>Model & Inference</span>
+      </li>
+      <li class="nav-item" data-tab="security">
+        <span class="nav-icon">🛡️</span>
+        <span>Security & Attacks</span>
+      </li>
+      <li class="nav-item" data-tab="experiments">
+        <span class="nav-icon">🧪</span>
+        <span>Experiments Benchmark</span>
+      </li>
+      <li class="nav-item" data-tab="logs">
+        <span class="nav-icon">📜</span>
+        <span>Live Event Logs</span>
+      </li>
+      <li class="nav-item" data-tab="research">
+        <span class="nav-icon">📚</span>
+        <span>BC-FL-SRV Research</span>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div>
+        <span class="status-dot" id="global-status-dot"></span>
+        <span id="global-status-text" style="font-weight:600;">IDLE</span>
+      </div>
+      <span>v2.0.0</span>
+    </div>
+  </aside>
+
+  <!-- ── Main Layout ───────────────────────────────────────────────────────── -->
+  <div class="main-wrapper">
+    <header class="top-bar">
+      <div class="top-title">
+        <h2 id="top-page-title">Dashboard</h2>
+      </div>
+      <div class="top-actions">
+        <span class="badge badge-info" id="header-status-badge">READY</span>
+        <button class="btn btn-secondary btn-sm" onclick="refreshAll()">⟳ Refresh</button>
+      </div>
+    </header>
+
+    <main class="content-area">
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           TAB 1: DASHBOARD
+           ══════════════════════════════════════════════════════════════════════ -->
+      <section id="page-dashboard" class="page active">
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+          <div class="card kpi-card">
+            <span class="kpi-label">Current FL Round</span>
+            <span class="kpi-val" id="kpi-round">0 / 0</span>
+            <span class="kpi-sub">Synchronous rounds</span>
+          </div>
+          <div class="card kpi-card">
+            <span class="kpi-label">Active FL Clients</span>
+            <span class="kpi-val" id="kpi-clients">0 / 0</span>
+            <span class="kpi-sub">Non-IID Shards (α=0.5)</span>
+          </div>
+          <div class="card kpi-card">
+            <span class="kpi-label">Global Model Accuracy</span>
+            <span class="kpi-val" id="kpi-accuracy" style="color:var(--accent-cyan);">0.0%</span>
+            <span class="kpi-sub">Fashion-MNIST test set</span>
+          </div>
+          <div class="card kpi-card">
+            <span class="kpi-label">Global Model Loss</span>
+            <span class="kpi-val" id="kpi-loss" style="color:var(--accent-amber);">0.0000</span>
+            <span class="kpi-sub">Cross-Entropy Loss</span>
+          </div>
+          <div class="card kpi-card">
+            <span class="kpi-label">Blockchain Blocks</span>
+            <span class="kpi-val" id="kpi-blocks" style="color:var(--accent-purple);">0</span>
+            <span class="kpi-sub">Quorum verified ledger</span>
+          </div>
+          <div class="card kpi-card">
+            <span class="kpi-label">Model Updates</span>
+            <span class="kpi-val" id="kpi-updates" style="color:var(--accent-emerald);">0 acc / 0 rej</span>
+            <span class="kpi-sub">Signature & commit verified</span>
+          </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="charts-grid">
+          <div class="card chart-card">
+            <div class="chart-header">
+              <h3>Accuracy vs FL Round</h3>
+              <div class="chart-action-group">
+                <button class="btn btn-secondary btn-sm" onclick="expandChart('accuracy')" title="Expand high-resolution view">⤢ Expand</button>
+                <button class="btn btn-secondary btn-sm" onclick="charts.accuracy.exportImage()">Export PNG</button>
+              </div>
+            </div>
+            <div class="chart-canvas-container">
+              <canvas id="chart-accuracy" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+            </div>
+          </div>
+
+          <div class="card chart-card">
+            <div class="chart-header">
+              <h3>Loss vs FL Round</h3>
+              <div class="chart-action-group">
+                <button class="btn btn-secondary btn-sm" onclick="expandChart('loss')" title="Expand high-resolution view">⤢ Expand</button>
+                <button class="btn btn-secondary btn-sm" onclick="charts.loss.exportImage()">Export PNG</button>
+              </div>
+            </div>
+            <div class="chart-canvas-container">
+              <canvas id="chart-loss" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+            </div>
+          </div>
+
+          <div class="card chart-card">
+            <div class="chart-header">
+              <h3>Client Participation (Accepted Updates)</h3>
+              <div class="chart-action-group">
+                <button class="btn btn-secondary btn-sm" onclick="expandChart('participation')" title="Expand high-resolution view">⤢ Expand</button>
+                <button class="btn btn-secondary btn-sm" onclick="charts.participation.exportImage()">Export PNG</button>
+              </div>
+            </div>
+            <div class="chart-canvas-container">
+              <canvas id="chart-participation" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+            </div>
+          </div>
+
+          <div class="card chart-card">
+            <div class="chart-header">
+              <h3>Cumulative Blockchain Growth</h3>
+              <div class="chart-action-group">
+                <button class="btn btn-secondary btn-sm" onclick="expandChart('blockchain')" title="Expand high-resolution view">⤢ Expand</button>
+                <button class="btn btn-secondary btn-sm" onclick="charts.blockchain.exportImage()">Export PNG</button>
+              </div>
+            </div>
+            <div class="chart-canvas-container">
+              <canvas id="chart-blockchain" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Recent Blockchain Uploads Feed -->
+        <div class="card" style="margin-top: 20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div>
+              <h3>Recent Blockchain Model Uploads (Quorum Verified Transactions)</h3>
+              <p style="font-size:12.5px; color:var(--text-secondary); margin-top:2px;">
+                Verified client parameter deltas ($\Delta w$) cryptographically sealed into the distributed ledger with Ed25519 signatures.
+              </p>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="document.querySelector('[data-tab=blockchain]').click()">View All in Explorer →</button>
+          </div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tx ID</th>
+                  <th>FL Round</th>
+                  <th>Block #</th>
+                  <th>Uploader Client</th>
+                  <th>Payload Size</th>
+                  <th>SHA-256 Update Commitment</th>
+                  <th>Status</th>
+                  <th>Consensus</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-uploads-table-body">
+                <!-- Dynamically populated from /api/blockchain/uploads -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           TAB 2: CLIENTS PAGE
+           ══════════════════════════════════════════════════════════════════════ -->
+      <section id="page-clients" class="page">
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="margin-bottom: 8px;">Federated Learning Clients & Cryptographic Identities</h3>
+          <p style="font-size: 13px; color: var(--text-secondary);">
+            Every client possesses a unique <strong>Ed25519 identity keypair</strong>, holds an independent non-IID Dirichlet partition of Fashion-MNIST, performs local gradient training, and produces signed SHA-256 update commitments. Click any client to inspect class distribution, layer weights, and proofs.
+          </p>
+        </div>
+
+        <!-- Clients Overview Table -->
+        <div class="card" style="margin-bottom: 20px;">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Client #</th>
+                  <th>Client ID</th>
+                  <th>Ed25519 Public Key</th>
+                  <th>Dataset Samples</th>
+                  <th>Status</th>
+                  <th>Local Loss</th>
+                  <th>||Δw|| (L2 Norm)</th>
+                  <th>Consensus Alignment</th>
+                  <th>Commitment</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="clients-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Client Weights & Gradient Delta Transparency Grid -->
+        <div class="card" style="margin-bottom: 20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <h3>Client Weights & Gradient Delta Transparency</h3>
+              <p style="font-size:12.5px; color:var(--text-secondary); margin-top:2px;">
+                Layer-by-layer parameter update magnitudes and consensus alignment score ($\cos(\Delta w_i, \Delta w_{\text{global}})$).
+              </p>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="loadClients()">⟳ Refresh Weights</button>
+          </div>
+          <div class="weights-grid" id="clients-weights-grid">
+            <!-- Dynamically populated client weight cards -->
+          </div>
+        </div>
+
+        <!-- Per-Client Live Training Logs Stream -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div>
+              <h3>Client Training Activity & Cryptographic Proof Stream</h3>
+              <p style="font-size:12.5px; color:var(--text-secondary); margin-top:2px;">
+                Step-by-step local SGD execution logs, mini-batch updates, and signature proofs for each client.
+              </p>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <label style="font-size:12px; color:var(--text-secondary);">Filter Client:</label>
+              <select id="select-client-log" onchange="renderFilteredClientLogs()" style="padding:4px 8px; font-size:12px;">
+                <option value="all">All Clients</option>
+              </select>
+            </div>
+          </div>
+          <div class="terminal" id="client-logs-terminal" style="height: 240px;">
+            <!-- Populated via renderFilteredClientLogs -->
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           TAB 3: FL TRAINING ROOM
+           ══════════════════════════════════════════════════════════════════════ -->
+      <section id="page-training" class="page">
+        <div style="display: grid; grid-template-columns: 340px 1fr; gap: 20px;">
+          <!-- Controls Panel -->
+          <div class="card">
+            <h3 style="margin-bottom: 14px;">Experiment Parameters</h3>
+
+            <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px;">
+              <div>
+                <label style="display:block; margin-bottom:4px; color:var(--text-secondary);">Number of Clients:</label>
+                <input type="number" id="input-clients" value="5" min="2" max="20" style="width:100%;">
+              </div>
+
+              <div>
+                <label style="display:block; margin-bottom:4px; color:var(--text-secondary);">FL Rounds:</label>
+                <input type="number" id="input-rounds" value="10" min="1" max="50" style="width:100%;">
+              </div>
+
+              <div>
+                <label style="display:block; margin-bottom:4px; color:var(--text-secondary);">Non-IID Dirichlet Alpha (α):</label>
+                <input type="number" id="input-alpha" value="0.5" step="0.1" min="0.1" max="5.0" style="width:100%;">
+                <span style="font-size:11px; color:var(--text-muted);">Lower = more skewed class distribution</span>
+              </div>
+
+              <div>
+                <label style="display:block; margin-bottom:4px; color:var(--text-secondary);">Local Epochs per Round:</label>
+                <input type="number" id="input-epochs" value="2" min="1" max="5" style="width:100%;">
+              </div>
+
+              <div>
+                <label style="display:block; margin-bottom:4px; color:var(--text-secondary);">Learning Rate (SGD):</label>
+                <input type="number" id="input-lr" value="0.03" step="0.01" min="0.001" max="0.5" style="width:100%;">
+              </div>
+
+              <div>
+                <label style="display:block; margin-bottom:4px; color:var(--text-secondary);">Blockchain Nodes & Quorum:</label>
+                <div style="display:flex; gap:8px;">
+                  <input type="number" id="input-nodes" value="3" min="1" max="7" style="width:50%;" title="Nodes">
+                  <input type="number" id="input-quorum" value="2" min="1" max="7" style="width:50%;" title="Quorum">
+                </div>
+              </div>
+
+              <div>
+                <label style="display:block; margin-bottom:4px; color:var(--text-secondary);">Random Seed:</label>
+                <input type="number" id="input-seed" value="42" style="width:100%;">
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
+                <button class="btn btn-success" id="btn-start-exp" style="grid-column: span 2;">▶ START EXPERIMENT</button>
+                <button class="btn btn-warning" id="btn-pause-exp">⏸ Pause</button>
+                <button class="btn btn-primary" id="btn-resume-exp">▶ Resume</button>
+                <button class="btn btn-danger" id="btn-stop-exp">⏹ Stop</button>
+                <button class="btn btn-secondary" id="btn-reset-exp">↺ Reset</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Progress Monitor -->
+          <div class="card" style="display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3 id="training-current-round">Round 0 / 0</h3>
+              <span id="training-stage-text" class="badge badge-info">Ready to launch</span>
+            </div>
+
+            <div class="progress-container" style="height: 12px; margin-bottom: 20px;">
+              <div class="progress-bar" id="training-main-progress" style="width: 0%;"></div>
+            </div>
+
+            <div class="chart-header">
+              <h4>Training Time per Round</h4>
+            </div>
+            <div class="chart-canvas-container" style="height:180px; min-height:180px; max-height:180px; margin-bottom: 16px;">
+              <canvas id="chart-time" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+            </div>
+
+            <h4 style="margin-bottom: 8px; font-size: 13px;">Live Activity Feed</h4>
+            <div class="terminal" id="live-terminal" style="flex: 1; height: 180px;">
+              <!-- Streaming log output -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           TAB 4: BLOCKCHAIN EXPLORER
+           ══════════════════════════════════════════════════════════════════════ -->
+      <section id="page-blockchain" class="page">
+
+        <!-- Header + Verify Button -->
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px;">
+          <div>
+            <h2 style="font-size:18px; font-weight:700; color:#f8fafc; margin-bottom:4px;">⛓ Distributed Blockchain Ledger</h2>
+            <p style="font-size:12.5px; color:#64748b; max-width:620px; line-height:1.6;">
+              Cryptographically chained SHA-256 blocks recording every FL event — Round Start, Update Submission, FedAvg Aggregation, Round End — across all replicated ledger nodes with quorum consensus.
+            </p>
+          </div>
+          <button class="btn btn-primary" id="btn-verify-chain" style="flex-shrink:0;">
+            <span>🛡</span> Verify Chain Integrity
+          </button>
+        </div>
+
+        <!-- Blockchain KPI Stats -->
+        <div class="kpi-grid" style="margin-bottom:20px;" id="bc-kpi-bar">
+          <div class="card kpi-card" style="border-left:3px solid #6366f1;">
+            <span class="kpi-label">Total Blocks</span>
+            <span class="kpi-val" id="bc-kpi-blocks" style="color:#818cf8;">—</span>
+            <span class="kpi-sub">SHA-256 chained</span>
+          </div>
+          <div class="card kpi-card" style="border-left:3px solid #10b981;">
+            <span class="kpi-label">Verified Uploads</span>
+            <span class="kpi-val" id="bc-kpi-uploads" style="color:#34d399;">—</span>
+            <span class="kpi-sub">Ed25519 signed Tx</span>
+          </div>
+          <div class="card kpi-card" style="border-left:3px solid #38bdf8;">
+            <span class="kpi-label">FL Rounds Recorded</span>
+            <span class="kpi-val" id="bc-kpi-rounds" style="color:#38bdf8;">—</span>
+            <span class="kpi-sub">Start → End events</span>
+          </div>
+          <div class="card kpi-card" style="border-left:3px solid #f59e0b;">
+            <span class="kpi-label">Chain Status</span>
+            <span class="kpi-val" id="bc-kpi-status" style="color:#fbbf24; font-size:14px;">UNVERIFIED</span>
+            <span class="kpi-sub">Click Verify to check</span>
+          </div>
+        </div>
+
+        <!-- View Toggle -->
+        <div class="filter-pills" style="margin-bottom:16px;">
+          <button class="filter-pill active" id="pill-all-blocks" onclick="switchBlockchainView('blocks')">📦 All Ledger Blocks</button>
+          <button class="filter-pill" id="pill-uploads" onclick="switchBlockchainView('uploads')">⚡ Client Tx Uploads</button>
+        </div>
+
+        <!-- Blocks View -->
+        <div id="blockchain-blocks-list">
+          <!-- Dynamically populated block cards -->
+        </div>
+
+        <!-- Uploads View -->
+        <div id="blockchain-uploads-container" style="display:none;">
+          <div class="card">
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tx ID</th>
+                    <th>FL Round</th>
+                    <th>Block #</th>
+                    <th>Client</th>
+                    <th>Public Key</th>
+                    <th>Payload</th>
+                    <th>SHA-256 Commitment</th>
+                    <th>Status</th>
+                    <th>Consensus</th>
+                  </tr>
+                </thead>
+                <tbody id="blockchain-uploads-table-body">
+                  <!-- Dynamically populated from /api/blockchain/uploads -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           TAB 5: MODEL & INFERENCE
+           ══════════════════════════════════════════════════════════════════════ -->
+      <section id="page-model" class="page">
+        <!-- Architecture Cards -->
+        <div class="kpi-grid" style="margin-bottom: 20px;">
+          <div class="card kpi-card">
+            <span class="kpi-label">Neural Architecture</span>
+            <span class="kpi-val" style="font-size:16px;">SmallCNN</span>
+            <span class="kpi-sub" id="model-arch">Conv2D -> MaxPool -> Linear</span>
+          </div>
+          <div class="card kpi-card">
+            <span class="kpi-label">Total Parameters</span>
+            <span class="kpi-val" id="model-params-count">52,138</span>
+            <span class="kpi-sub">Float32 trainable weights</span>
+          </div>
+          <div class="card kpi-card">
+            <span class="kpi-label">Test Set Accuracy</span>
+            <span class="kpi-val" id="model-acc" style="color:var(--accent-cyan);">0.0%</span>
+            <span class="kpi-sub">Loss: <span id="model-loss">0.0000</span></span>
+          </div>
+          <div class="card kpi-card">
+            <span class="kpi-label">Trained Rounds</span>
+            <span class="kpi-val" id="model-rounds-trained">0</span>
+            <span class="kpi-sub">FedAvg aggregated rounds</span>
+          </div>
+        </div>
+
+        <!-- Model Accuracy & Non-IID Convergence Documentation -->
+        <div class="card" style="margin-bottom: 20px; border-left: 3px solid var(--accent-cyan);">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+              <h3 style="color:var(--accent-cyan); margin-bottom:6px;">Model Accuracy & Non-IID Dirichlet Convergence Analysis</h3>
+              <p style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+                <strong>Baseline vs Converged Comparison:</strong> Initial 5-round smoke testing achieved <strong>66.57%</strong> accuracy due to early stopping and limited mini-batches (20 max batches/client). Under full federated optimization (10 rounds, 2 local epochs, 40 batches, $\text{lr}=0.03, \text{momentum}=0.9$), global test accuracy reaches <strong>83.88%</strong> (loss: <strong>0.4281</strong>).
+              </p>
+              <div style="display:flex; gap:16px; margin-top:10px; font-size:12px; color:var(--text-muted);">
+                <div>• Dataset: <strong>Fashion-MNIST (10 classes, 60,000 train / 10,000 test)</strong></div>
+                <div>• Non-IID Dirichlet Skew: <strong>α = 0.5 (Severe client label skew)</strong></div>
+                <div>• Theoretical SmallCNN Ceiling: <strong>~85-88% on Non-IID FL</strong></div>
+              </div>
+            </div>
+            <span class="badge badge-success" style="font-size:12px; padding:4px 10px;">83.9% VERIFIED ACCURACY</span>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 20px;">
+          <strong>Current Model SHA-256 Parameter Hash:</strong>
+          <span class="mono" id="model-hash" style="display:block; margin-top:4px; word-break:break-all;">—</span>
+        </div>
+
+        <!-- Live Inference Section -->
+        <div style="display: grid; grid-template-columns: 1fr 340px; gap: 20px;">
+          <div class="card">
+            <h3>Fashion-MNIST Interactive Test Gallery</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
+              Click any real test image to evaluate it with the trained global model weights live:
+            </p>
+            <div class="samples-grid" id="samples-gallery">
+              <!-- Dynamically populated 28x28 sample items -->
+            </div>
+
+            <div style="margin-top: 20px; display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 13px; color: var(--text-secondary);">Or test test-set index (0–9999):</span>
+              <input type="number" id="input-sample-idx" value="42" min="0" max="9999" style="width: 100px;">
+              <button class="btn btn-secondary btn-sm" id="btn-manual-infer">Evaluate Sample</button>
+            </div>
+          </div>
+
+          <!-- Inference Results Box -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3>Live Prediction</h3>
+              <span class="badge" id="inf-match-badge">—</span>
+            </div>
+
+            <div style="font-size: 13px; line-height: 1.8;">
+              <p>Ground Truth Label: <strong id="inf-true-label" style="color:#f8fafc;">—</strong></p>
+              <p>Model Prediction: <strong id="inf-pred-label" style="color:var(--accent-cyan); font-size:16px;">—</strong></p>
+              <p>Confidence: <strong id="inf-conf">0.0%</strong></p>
+
+              <h4 style="margin-top: 14px; margin-bottom: 8px; font-size: 12px; color: var(--text-secondary);">Class Probabilities (Top 5):</h4>
+              <div id="inf-prob-bars">
+                <!-- Dynamically populated probability bars -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confusion Matrix -->
+        <div class="card" style="margin-top: 20px;">
+          <div class="chart-header">
+            <h3>Global Model Confusion Matrix (Fashion-MNIST Test Set)</h3>
+          </div>
+          <div id="confusion-matrix-container" style="overflow-x: auto; padding: 10px 0;">
+            <!-- Rendered 10x10 matrix -->
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           TAB 6: SECURITY & ATTACKS
+           ══════════════════════════════════════════════════════════════════════ -->
+      <section id="page-security" class="page">
+        <div class="card" style="margin-bottom: 20px;">
+          <h3>Cryptographic Security & Tamper Detection</h3>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 6px;">
+            The BC-FL-SRV security layer validates model updates before ledger inclusion. It cryptographically binds model updates to client identities and round numbers, completely preventing unauthorized participants, forged updates, and in-flight parameter modifications.
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div class="card">
+            <h4 style="color:#fb7185; margin-bottom:8px;">1. Parameter Byte Flipping</h4>
+            <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px;">
+              Attacker modifies 100 model parameter values in-flight after the client has signed.
+            </p>
+            <button class="btn btn-danger btn-sm" id="btn-attack-tamper" style="width:100%;">TEST TAMPERED UPDATE</button>
+          </div>
+
+          <div class="card">
+            <h4 style="color:#f59e0b; margin-bottom:8px;">2. Commitment Forgery</h4>
+            <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px;">
+              Attacker replaces commitment hash with a forged value while attempting to reuse client signature.
+            </p>
+            <button class="btn btn-warning btn-sm" id="btn-attack-forgery" style="width:100%;">TEST INVALID SIGNATURE</button>
+          </div>
+
+          <div class="card">
+            <h4 style="color:#38bdf8; margin-bottom:8px;">3. Unauthorized Client</h4>
+            <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px;">
+              Unregistered entity generates an Ed25519 keypair and attempts to submit an update.
+            </p>
+            <button class="btn btn-primary btn-sm" id="btn-attack-unauth" style="width:100%;">TEST UNAUTHORIZED CLIENT</button>
+          </div>
+
+          <div class="card">
+            <h4 style="color:#a855f7; margin-bottom:8px;">4. Blockchain Block Tampering</h4>
+            <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px;">
+              Direct modification of past committed transaction block on a ledger node.
+            </p>
+            <button class="btn btn-secondary btn-sm" id="btn-attack-block" style="width:100%;">TEST BLOCK TAMPERING</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-bottom: 10px;">Security Properties & Guarantees</h3>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Attack Scenario</th>
+                  <th>Defense Mechanism</th>
+                  <th>Cryptographic Primitive</th>
+                  <th>Verification Outcome</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Model Weight Modification</strong></td>
+                  <td>Update Commitment Check</td>
+                  <td>SHA-256 with Domain Separation</td>
+                  <td><span class="badge badge-success">CAUGHT (rejected_commit)</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Signature Impersonation</strong></td>
+                  <td>Identity Signature Verification</td>
+                  <td>Ed25519 Public Key Cryptography</td>
+                  <td><span class="badge badge-success">CAUGHT (rejected_sig)</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Sybil / Rogue Nodes</strong></td>
+                  <td>Admission Registry Authorization</td>
+                  <td>Deterministic Key Identity</td>
+                  <td><span class="badge badge-success">CAUGHT (rejected_unknown)</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Historical Ledger Rewrite</strong></td>
+                  <td>Cryptographic Hash Chaining</td>
+                  <td>Append-only SHA-256 prev_hash links</td>
+                  <td><span class="badge badge-success">CAUGHT (verify_chain failure)</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           TAB 7: EXPERIMENTS BENCHMARK
+           ══════════════════════════════════════════════════════════════════════ -->
+      <section id="page-experiments" class="page">
+        <div class="card" style="margin-bottom: 16px;">
+          <h3>Historical Experiments & Research Benchmarks</h3>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
+            Compare reproducibility, convergence accuracy, loss, and blockchain block heights across parameter settings (e.g. Non-IID Dirichlet α skew, client counts, learning rates).
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Experiment ID</th>
+                  <th>Timestamp</th>
+                  <th>Clients</th>
+                  <th>Rounds</th>
+                  <th>Alpha (α)</th>
+                  <th>Final Accuracy</th>
+                  <th>Final Loss</th>
+                  <th>Blocks</th>
+                  <th>Ledger Status</th>
+                </tr>
+              </thead>
+              <tbody id="experiments-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           TAB 8: LIVE EVENT LOGS
+           ══════════════════════════════════════════════════════════════════════ -->
+      <section id="page-logs" class="page">
+        <div class="card" style="margin-bottom: 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h3>Real-Time System & Application Events</h3>
+            <p style="font-size: 13px; color: var(--text-secondary);">
+              Streaming execution logs for client training, cryptographic verification, quorum consensus, and FedAvg aggregation.
+            </p>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <input type="text" id="log-search-input" placeholder="Search logs..." style="padding:5px 10px; font-size:12px; width:180px;" oninput="filterLogs()">
+            <button class="btn btn-secondary btn-sm" onclick="loadLogs()">⟳ Refresh Logs</button>
+            <button class="btn btn-secondary btn-sm" onclick="clearLogsView()">🧹 Clear View</button>
+          </div>
+        </div>
+
+        <!-- Filter pills for logs -->
+        <div class="filter-pills" style="margin-bottom:12px;">
+          <button class="filter-pill active" id="log-filter-all" onclick="setLogCategoryFilter('all')">All Events</button>
+          <button class="filter-pill" id="log-filter-security" onclick="setLogCategoryFilter('security')">🛡 Security</button>
+          <button class="filter-pill" id="log-filter-blockchain" onclick="setLogCategoryFilter('blockchain')">⛓ Blockchain</button>
+          <button class="filter-pill" id="log-filter-training" onclick="setLogCategoryFilter('training')">🧠 Training</button>
+          <button class="filter-pill" id="log-filter-system" onclick="setLogCategoryFilter('system')">⚙ System</button>
+        </div>
+
+        <div class="card" style="padding: 10px;">
+          <div class="terminal" id="live-terminal-full" style="height: 520px;">
+            <!-- Populated via loadLogs -->
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           TAB 9: BC-FL-SRV RESEARCH
+           ══════════════════════════════════════════════════════════════════════ -->
+      <section id="page-research" class="page">
+        <div class="card" style="margin-bottom: 20px;">
+          <h2 style="color:var(--accent-cyan); margin-bottom: 8px;">BC-FL-SRV: Verifiable Admission Decisions for Federated Learning</h2>
+          <p style="font-size: 13.5px; line-height: 1.7; color: var(--text-secondary);">
+            In privacy-preserving federated learning with secure aggregation, the central server deliberately cannot inspect individual client updates. This creates an <strong>accountability hole (AG1)</strong>: the server can claim it admitted 40 honest clients and rejected 10 outliers, but no external party can verify whether that claim is true.
+          </p>
+          <p style="font-size: 13.5px; line-height: 1.7; color: var(--text-secondary); margin-top: 8px;">
+            BC-FL-SRV solves this by introducing a rotating committee that inspects <em>bounded evidence</em> and co-signs admission sets into an append-only Merkle transcript, enabling any third-party auditor to verify admission integrity in logarithmic time.
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
+          <div class="card" style="border-left: 3px solid var(--accent-emerald);">
+            <h3 style="color:#34d399; margin-bottom: 8px;">1. Research Subsystem (Admission Verification)</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+              The foundational research verified in E1–E5, G2, and G3:
+            </p>
+            <ul style="margin-left: 18px; margin-top: 8px; font-size: 12.5px; line-height: 1.7; color: var(--text-secondary);">
+              <li><strong>Merkle Transcript:</strong> Append-only log providing inclusion proofs and non-equivocation (AG3).</li>
+              <li><strong>Auditor:</strong> Evaluates admission rules in O(log n) time without accessing raw weights.</li>
+              <li><strong>Rotating Committee:</strong> Deterministic sortition seeded from previous transcript root.</li>
+              <li><strong>Bounded Evidence:</strong> Discloses minimal metadata without leaking training inputs.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-left: 3px solid var(--accent-cyan);">
+            <h3 style="color:#38bdf8; margin-bottom: 8px;">2. Demonstration Subsystem (Decentralized FL)</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+              The end-to-end interactive training platform built here:
+            </p>
+            <ul style="margin-left: 18px; margin-top: 8px; font-size: 12.5px; line-height: 1.7; color: var(--text-secondary);">
+              <li><strong>Multiple FL Clients:</strong> Training PyTorch SmallCNN models locally on non-IID shards.</li>
+              <li><strong>Ed25519 Signatures:</strong> Authenticating every update commitment.</li>
+              <li><strong>Distributed Ledger:</strong> Multi-node ledger with quorum consensus recording round events.</li>
+              <li><strong>Real Model Inference:</strong> Generating a verified global model for Fashion-MNIST classification.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 style="margin-bottom: 14px;">Original Research Experiments (E1–E5):</h3>
+        <div id="research-exp-cards">
+          <!-- Dynamically populated from /api/research -->
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ── Detail Modal ──────────────────────────────────────────────────────── -->
+  <div class="modal-overlay" id="client-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="client-modal-title">Item Details</h3>
+        <button class="close-btn" onclick="closeModal()">×</button>
+      </div>
+      <div id="client-modal-body">
+        <!-- Dynamically injected -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Chart High-Resolution Expanded Modal ──────────────────────────────── -->
+  <div class="modal-overlay" id="chart-expand-modal">
+    <div class="modal-content modal-content-lg">
+      <div class="modal-header">
+        <div>
+          <h3 id="chart-expand-title" style="color:var(--text-primary);">Expanded Chart Analysis</h3>
+          <span style="font-size:11.5px; color:var(--accent-cyan); text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">High-DPI Vector Canvas • Zero Blur</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button class="btn btn-secondary btn-sm" onclick="window.expandedChartInstance?.exportImage(3)">Download High-Res 4K Image</button>
+          <button class="close-btn" onclick="closeExpandModal()">×</button>
+        </div>
+      </div>
+      <div id="chart-expand-stats">
+        <!-- Dynamically populated summary stats -->
+      </div>
+      <div class="chart-expand-container">
+        <canvas id="chart-expand-canvas" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Client Weights & Layer Inspection Modal ────────────────────────────── -->
+  <div class="modal-overlay" id="weights-modal">
+    <div class="modal-content modal-content-lg">
+      <div class="modal-header">
+        <h3 id="weights-modal-title">Client Weights & Layer Breakdown</h3>
+        <button class="close-btn" onclick="document.getElementById('weights-modal').classList.remove('active')">×</button>
+      </div>
+      <div id="weights-modal-body">
+        <!-- Dynamically injected -->
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/charts.js?v=2.0.2"></script>
+  <script src="/static/app.js?v=2.0.2"></script>
+</body>
+</html>

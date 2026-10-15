@@ -1,0 +1,77 @@
+[
+  {
+    "round": 0,
+    "n_submitted": 5,
+    "n_accepted": 5,
+    "n_rejected": 0,
+    "test_accuracy": 0.3316,
+    "test_loss": 1.9348899658203125,
+    "wall_clock_s": 1.1513481140136719,
+    "block_hashes": [
+      "c8a0a5825446de3acae73879ea19cd46b5ed78db1b70690e6fe349d8e1672a76",
+      "4f563b00ff5211c8d2e98dcd60693f528e1c8f9484b6c259fc9a029a2ef0b39f",
+      "c1e130f41093d64f29736b07b8c4468a345ac62911d9fbc522b65b1374481afb",
+      "1e0e23a1c83dd6e4e9da97cce66a8e7f66f403a7b12f62f98fb902e9e1e9f7bd"
+    ]
+  },
+  {
+    "round": 1,
+    "n_submitted": 5,
+    "n_accepted": 5,
+    "n_rejected": 0,
+    "test_accuracy": 0.45,
+    "test_loss": 1.4472382995605468,
+    "wall_clock_s": 1.1460082530975342,
+    "block_hashes": [
+      "c48931dbf1c0db17192016a166412a41efd011c87cc7189b1dd8de7e7f8686f8",
+      "7641a2aae742be61f15e925aef49391aa075afd2c849066daa7a0f63a0666f63",
+      "04876108af8e5a8c7dc45276c3459cdd7065ba87374aff334aa8099d2c2ea441",
+      "ed53087152380bed2571d353fd4a2ae5cff961b464701682371b0de1387e0aaa"
+    ]
+  },
+  {
+    "round": 2,
+    "n_submitted": 5,
+    "n_accepted": 5,
+    "n_rejected": 0,
+    "test_accuracy": 0.613,
+    "test_loss": 1.0167668823242189,
+    "wall_clock_s": 1.1412889957427979,
+    "block_hashes": [
+      "286a2ceeb5bdec3c518a275b02a2cc3937c0db61836521b73610ef23b80f0e3b",
+      "61a60641857fbe0950258d63e3cf46e86e20a885f91783f9965a7667dbe49814",
+      "d3fa9cd7889da3eb6f3eb395771a3c001a2c1ce98c29d942bc91ce997b4999df",
+      "e7621c288ec5eea02a4078c3845e7c673e10565f86007dd0b06809f377247fe4"
+    ]
+  },
+  {
+    "round": 3,
+    "n_submitted": 5,
+    "n_accepted": 5,
+    "n_rejected": 0,
+    "test_accuracy": 0.6103,
+    "test_loss": 0.9455599578857422,
+    "wall_clock_s": 1.1414752006530762,
+    "block_hashes": [
+      "e5bc824ab2e21c2bd56c49620caf3f74097eaf7fc1bb06b794c2fe0ab0efb4c9",
+      "48bedf3527a583adf12025325e4a64e8d9abf3fddde78fd0b332df17b75b19cb",
+      "62324c23316de403d09ef2cf41e05d93e5d09baadb722437bd17c5f42f65eba4",
+      "3fd35935497487d281a01238432a3e6e84b4a6bc2640dc5150c1a41946d9eccf"
+    ]
+  },
+  {
+    "round": 4,
+    "n_submitted": 5,
+    "n_accepted": 5,
+    "n_rejected": 0,
+    "test_accuracy": 0.6657,
+    "test_loss": 0.8120289459228516,
+    "wall_clock_s": 1.1410350799560547,
+    "block_hashes": [
+      "4c5745bcc1aa0364a3b48fff8cf68e746186b3f41d6fdaf6a9edf054dc6c6f47",
+      "098ff07a71eca834f783caa0561148f8b34198f1d16e2e49202bfd5f2d520e28",
+      "b7085060cc11801a4fdaad19c3017e3c0a77b94f0d448d5121a86db7cea0c6a4",
+      "a1efbe08452148cfa474e87d76493bb7e97fac14aaf969174dff15e90bee73b9"
+    ]
+  }
+]
