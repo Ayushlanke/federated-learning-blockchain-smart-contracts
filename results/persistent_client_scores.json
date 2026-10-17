@@ -9,7 +9,8 @@
     "495970a06a0baf8cfdee986db7550b7d": 1.0,
     "1c390dda464b26d249ad05a80f0a2dbe": 1.0,
     "3542dc4b496e64e2a35266d8ada6dcd7": 1.0,
-    "025d601e161e09d660fd1b4715b2d44e": 1.0
+    "025d601e161e09d660fd1b4715b2d44e": 1.0,
+    "221f3a2386b5ec406823225af9e7f7d8": 0.2
   },
   "history": {
     "a9b55a506ea92008d61403c95789580e": [
@@ -2281,8 +2282,69 @@
         "reason": "Honest convergence in round",
         "tier": "TRUSTED"
       }
+    ],
+    "221f3a2386b5ec406823225af9e7f7d8": [
+      {
+        "timestamp": "23:17:01",
+        "round": 25,
+        "delta": -0.4,
+        "score_before": 1.0,
+        "score_after": 0.6,
+        "reason": "Parameter Byte-Flipping caught by SHA-256 verifier",
+        "tier": "AT_RISK"
+      },
+      {
+        "timestamp": "23:21:04",
+        "round": 25,
+        "delta": -0.4,
+        "score_before": 0.6,
+        "score_after": 0.2,
+        "reason": "Parameter Byte-Flipping caught by SHA-256 verifier",
+        "tier": "QUARANTINED"
+      }
     ]
   },
-  "threat_incidents": [],
-  "total_threats_blocked_count": 0
+  "threat_incidents": [
+    {
+      "id": "THREAT-20261017-001",
+      "timestamp": "23:17:01",
+      "round": 25,
+      "attacker_id": "221f3a2386b5ec406823225af9e7f7d8",
+      "caught_client_id": "221f3a2386b5ec406823225af9e7f7d8",
+      "attack_type": "tampered_update",
+      "attack_name": "Parameter Byte-Flipping (In-Flight MITM)",
+      "defense_layer": "Cryptographic Commitment Verification (SHA-256)",
+      "verification_status": "rejected_commit",
+      "status": "BLOCKED & CAUGHT",
+      "trust_score_before": 1.0,
+      "trust_score_after": 0.6,
+      "penalty": 0.4,
+      "detail": "Attacker modified 100 model parameter values post-signature.",
+      "forensic_data": {
+        "original_commitment": "ee5ae365c806b6609f7a628fd65a7adc4d5d410ce51c8cd834a5d9a826128ec5",
+        "tampered_commitment": "ee5ae365c806b6609f7a628fd65a7adc4d5d410ce51c8cd834a5d9a826128ec5"
+      }
+    },
+    {
+      "id": "THREAT-20261017-002",
+      "timestamp": "23:21:04",
+      "round": 25,
+      "attacker_id": "221f3a2386b5ec406823225af9e7f7d8",
+      "caught_client_id": "221f3a2386b5ec406823225af9e7f7d8",
+      "attack_type": "tampered_update",
+      "attack_name": "Parameter Byte-Flipping (In-Flight MITM)",
+      "defense_layer": "Cryptographic Commitment Verification (SHA-256)",
+      "verification_status": "rejected_sig",
+      "status": "BLOCKED & CAUGHT",
+      "trust_score_before": 0.6,
+      "trust_score_after": 0.2,
+      "penalty": 0.4,
+      "detail": "Attacker modified 100 model parameter values post-signature.",
+      "forensic_data": {
+        "original_commitment": "ee5ae365c806b6609f7a628fd65a7adc4d5d410ce51c8cd834a5d9a826128ec5",
+        "tampered_commitment": "ee5ae365c806b6609f7a628fd65a7adc4d5d410ce51c8cd834a5d9a826128ec5"
+      }
+    }
+  ],
+  "total_threats_blocked_count": 2
 }

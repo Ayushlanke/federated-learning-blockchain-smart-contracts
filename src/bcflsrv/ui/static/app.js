@@ -2458,7 +2458,7 @@ window.closeModal = function() {
 };
 
 window.closeExpandModal = function() {
-  closeExpandModal();
+  document.getElementById('chart-expand-modal')?.classList.remove('active');
 };
 
 window.closeWeightsModal = function() {
