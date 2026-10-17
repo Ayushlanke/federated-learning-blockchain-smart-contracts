@@ -145,3 +145,21 @@ def test_latencies_breakdown_api(client):
     assert res_alias.status_code == 200
 
 
+def test_custom_inference_api(client):
+    # Test valid 784-length pixel payload
+    pixels = [0.0] * 784
+    # Set a small test box in the center
+    for r in range(10, 18):
+        for c in range(10, 18):
+            pixels[r * 28 + c] = 0.8
+    res = client.post("/api/model/inference/custom", json={"pixels": pixels})
+    assert res.status_code == 200
+    data = res.json()
+    assert "predicted_label_id" in data
+    assert "predicted_label_name" in data
+    assert "confidence" in data
+    assert "probabilities" in data
+    assert len(data["probabilities"]) == 10
+
+
+

@@ -1,0 +1,11 @@
+{
+  "experiment_id": "exp_20261017_225828_c10_r25",
+  "timestamp": "20261017_225828",
+  "n_clients": 10,
+  "n_rounds": 25,
+  "dirichlet_alpha": 0.5,
+  "final_accuracy": 0.8784,
+  "final_loss": 0.3368910346984863,
+  "blockchain_blocks": 100,
+  "chain_integrity_ok": true
+}

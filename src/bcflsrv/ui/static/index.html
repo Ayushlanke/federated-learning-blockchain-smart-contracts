@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,12 @@
   <!-- Google Fonts: Montserrat (from flat coworking design template) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="/static/style.css?v=3.0.0">
 </head>
+
 <body>
 
   <!-- ── Sidebar Navigation ────────────────────────────────────────────────── -->
@@ -17,7 +21,7 @@
     <div class="sidebar-header">
       <div class="logo-badge">FL</div>
       <div class="logo-title">
-        <h1>BC-FL-SRV</h1>
+        <h1>Federated Learning</h1>
         <span>Research Platform</span>
       </div>
     </div>
@@ -69,11 +73,6 @@
         <h2 id="top-page-title">Dashboard</h2>
       </div>
 
-      <!-- Minimalist Search Input (Screen 2 Template) -->
-      <div class="top-search-bar">
-        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <input type="text" id="top-search-input" placeholder="Search parameters, blocks, clients..." oninput="handleGlobalSearch(this.value)">
-      </div>
 
       <div class="top-actions">
         <span class="badge badge-info" id="header-status-badge">READY</span>
@@ -91,36 +90,54 @@
         <!-- 4-Box Category Grid (Signature Screen 2 from Template) -->
         <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:14px;">
           <div>
-            <h2 style="font-size:20px; font-weight:800; color:var(--text-primary); margin-bottom:2px;">Find The Best Workspace For Your Research</h2>
-            <p style="font-size:12.5px; color:var(--text-secondary);">Decentralized Byzantine-resilient Federated Learning evaluation & cryptographic proof suite</p>
+            <h2 style="font-size:20px; font-weight:800; color:var(--text-primary); margin-bottom:2px;">Analytics</h2>
+            <p style="font-size:12.5px; color:var(--text-secondary);">Decentralized Byzantine-resilient Federated
+              Learning evaluation & cryptographic proof suite</p>
           </div>
         </div>
         <div class="category-grid">
-          <div class="category-card" onclick="document.querySelector('[data-tab=clients]').click()" title="Inspect FL Clients & Non-IID Partitions">
+          <div class="category-card" onclick="document.querySelector('[data-tab=clients]').click()"
+            title="Inspect FL Clients & Non-IID Partitions">
             <div class="category-card-icon-wrap">
               <div class="category-accent-dot"></div>
-              <svg class="category-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              <svg class="category-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
             </div>
             <h4>FL Clients</h4>
             <span id="cat-clients-count">10 Active Nodes</span>
           </div>
-          <div class="category-card" onclick="document.querySelector('[data-tab=blockchain]').click()" title="Explore Replicated Blockchain Ledger">
+          <div class="category-card" onclick="document.querySelector('[data-tab=blockchain]').click()"
+            title="Explore Replicated Blockchain Ledger">
             <div class="category-card-icon-wrap">
               <div class="category-accent-dot"></div>
-              <svg class="category-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+              <svg class="category-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
             </div>
             <h4>Blockchain</h4>
             <span id="cat-blocks-count">200 Blocks Sealed</span>
           </div>
-          <div class="category-card" onclick="document.querySelector('[data-tab=training]').click()" title="Launch & Control Federated Training">
+          <div class="category-card" onclick="document.querySelector('[data-tab=training]').click()"
+            title="Launch & Control Federated Training">
             <div class="category-card-icon-wrap">
               <div class="category-accent-dot"></div>
-              <svg class="category-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              <svg class="category-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
             </div>
             <h4>FL Training</h4>
             <span id="cat-training-status">50 Rounds FedAvg</span>
           </div>
-          <div class="category-card all-card" onclick="runAcademicAudit()" title="Run Comprehensive 5-Pillar Academic Audit">
+          <div class="category-card all-card" onclick="runAcademicAudit()"
+            title="Run Comprehensive 5-Pillar Academic Audit">
             <h4>All</h4>
             <span>Full Academic Audit</span>
           </div>
@@ -131,21 +148,27 @@
           <div class="academic-bar-info">
             <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
               <span class="badge badge-info">ACADEMIC BENCHMARK SPEC</span>
-              <span style="font-size:12px; color:var(--text-secondary); font-weight:600;">Empirical PyTorch Tensors • Cryptographic Proofs • Zero Mocks</span>
+              <span style="font-size:12px; color:var(--text-secondary); font-weight:600;">Empirical PyTorch Tensors •
+                Cryptographic Proofs • Zero Mocks</span>
             </div>
-            <h3 style="font-size:16px; margin:0; font-weight:800; color:var(--text-primary);">Verifiable Blockchain-Federated Learning Evaluation Suite</h3>
+            <h3 style="font-size:16px; margin:0; font-weight:800; color:var(--text-primary);">Verifiable
+              Blockchain-Federated Learning Evaluation Suite</h3>
           </div>
           <div class="academic-bar-actions">
-            <button class="btn btn-secondary btn-sm" onclick="showLatencyModal()" title="Inspect pipeline stage durations and per-client admission screening audit">
+            <button class="btn btn-secondary btn-sm" onclick="showLatencyModal()"
+              title="Inspect pipeline stage durations and per-client admission screening audit">
               ⏱️ Stage Latency & Admission
             </button>
-            <button class="btn btn-secondary btn-sm" onclick="verifyModelTestSet()" title="Run real PyTorch evaluation on 10,000 Fashion-MNIST test samples">
+            <button class="btn btn-secondary btn-sm" onclick="verifyModelTestSet()"
+              title="Run real PyTorch evaluation on 10,000 Fashion-MNIST test samples">
               🔬 Verify Model on Test Set (10k)
             </button>
-            <button class="btn btn-secondary btn-sm" onclick="verifyBlockchainChain()" title="Traverse SHA-256 block hash links from Genesis to Tip">
+            <button class="btn btn-secondary btn-sm" onclick="verifyBlockchainChain()"
+              title="Traverse SHA-256 block hash links from Genesis to Tip">
               🛡️ Verify Hash-Chain
             </button>
-            <button class="btn btn-primary btn-sm" onclick="runAcademicAudit()" title="Run end-to-end 5-pillar academic cryptographic & empirical audit">
+            <button class="btn btn-primary btn-sm" onclick="runAcademicAudit()"
+              title="Run end-to-end 5-pillar academic cryptographic & empirical audit">
               📜 Comprehensive Academic Audit
             </button>
           </div>
@@ -157,7 +180,8 @@
           <div class="card kpi-card">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
               <span class="kpi-label">Global Model Accuracy</span>
-              <button class="verify-pill-btn" onclick="verifyModelTestSet()" title="Verify live on 10,000 test set">🔬 Verify</button>
+              <button class="verify-pill-btn" onclick="verifyModelTestSet()" title="Verify live on 10,000 test set">🔬
+                Verify</button>
             </div>
             <span class="kpi-val" id="kpi-accuracy" style="color:var(--accent-cyan);">0.0%</span>
             <span class="kpi-sub">Top-1 Acc (10k Fashion-MNIST)</span>
@@ -209,7 +233,8 @@
           <div class="card kpi-card">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
               <span class="kpi-label">Blockchain Blocks</span>
-              <button class="verify-pill-btn" onclick="verifyBlockchainChain()" title="Verify SHA-256 hash chain">🛡️ Chain</button>
+              <button class="verify-pill-btn" onclick="verifyBlockchainChain()" title="Verify SHA-256 hash chain">🛡️
+                Chain</button>
             </div>
             <span class="kpi-val" id="kpi-blocks" style="color:var(--accent-purple);">0</span>
             <span class="kpi-sub" id="kpi-blocks-sub">Tip: 00000000...</span>
@@ -218,7 +243,8 @@
           <!-- 9. Quorum Consensus Protocol -->
           <div class="card kpi-card">
             <span class="kpi-label">Byzantine Quorum Rule</span>
-            <span class="kpi-val" id="kpi-quorum" style="font-size:18px; line-height:28px; color:var(--text-primary);">2/3 Quorum</span>
+            <span class="kpi-val" id="kpi-quorum"
+              style="font-size:18px; line-height:28px; color:var(--text-primary);">2/3 Quorum</span>
             <span class="kpi-sub">3 PoA Validator Nodes</span>
           </div>
 
@@ -240,7 +266,8 @@
           <div class="card kpi-card">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
               <span class="kpi-label">Federation Trust Index (τ)</span>
-              <button class="verify-pill-btn" onclick="document.querySelector('[data-tab=clients]').click()" title="Inspect permanent trust ledger">Inspect</button>
+              <button class="verify-pill-btn" onclick="document.querySelector('[data-tab=clients]').click()"
+                title="Inspect permanent trust ledger">Inspect</button>
             </div>
             <span class="kpi-val" id="kpi-trust-avg" style="color:var(--accent-emerald);">100.0%</span>
             <span class="kpi-sub">Admission Gate: 40.0% cutoff</span>
@@ -250,7 +277,8 @@
           <div class="card kpi-card">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
               <span class="kpi-label">Admission & Screening Time</span>
-              <button class="verify-pill-btn" onclick="showLatencyModal()" title="Inspect pipeline stage latency waterfall">⏱️ Profile</button>
+              <button class="verify-pill-btn" onclick="showLatencyModal()"
+                title="Inspect pipeline stage latency waterfall">⏱️ Profile</button>
             </div>
             <span class="kpi-val" id="kpi-admission-time" style="color:#06b6d4;">51.2 ms</span>
             <span class="kpi-sub" id="kpi-admission-sub">~10.2 ms / client screening</span>
@@ -259,15 +287,18 @@
 
         <!-- Academic Experimental Setup & Research Parameters Matrix -->
         <div class="card" style="margin-bottom: 24px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+          <div
+            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
             <div>
               <h3 style="margin-bottom:2px; font-size:15px;">Academic Experimental Benchmark Parameters</h3>
               <p style="font-size:12.5px; color:var(--text-secondary);">
-                Ground-truth research specification matching publication protocol. All parameters are active and cryptographically verifiable.
+                Ground-truth research specification matching publication protocol. All parameters are active and
+                cryptographically verifiable.
               </p>
             </div>
             <div style="display:flex; gap:8px; align-items:center;">
-              <span class="badge badge-success" id="matrix-model-hash-badge" title="Active Model Weights SHA-256">SHA-256 Verified ✓</span>
+              <span class="badge badge-success" id="matrix-model-hash-badge"
+                title="Active Model Weights SHA-256">SHA-256 Verified ✓</span>
               <span class="badge badge-info">PyTorch SmallCNN (52,138 params)</span>
             </div>
           </div>
@@ -299,7 +330,9 @@
             </div>
             <div class="matrix-item">
               <span class="matrix-label">Active Parameter State Hash</span>
-              <span class="matrix-val mono" id="matrix-param-hash" style="font-size:12px;" title="Full SHA-256 parameter hash">—</span>
+              <span class="matrix-val mono" id="matrix-param-hash"
+                style="font-size:11px; word-break:break-all; overflow-wrap:anywhere; line-height:1.4;"
+                title="Full SHA-256 parameter hash">—</span>
               <span class="matrix-note">SHA-256 digest of flat parameter vector</span>
             </div>
           </div>
@@ -312,12 +345,14 @@
             <div class="chart-header">
               <h3>Global Accuracy vs FL Round</h3>
               <div class="chart-action-group">
-                <button class="btn btn-secondary btn-sm" onclick="expandChart('accuracy')" title="Expand high-resolution view">⤢ Expand</button>
+                <button class="btn btn-secondary btn-sm" onclick="expandChart('accuracy')"
+                  title="Expand high-resolution view">⤢ Expand</button>
                 <button class="btn btn-secondary btn-sm" onclick="charts.accuracy.exportImage()">Export PNG</button>
               </div>
             </div>
             <div class="chart-canvas-container">
-              <canvas id="chart-accuracy" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+              <canvas id="chart-accuracy"
+                style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
             </div>
           </div>
 
@@ -326,12 +361,14 @@
             <div class="chart-header">
               <h3>Generalization Loss vs FL Round</h3>
               <div class="chart-action-group">
-                <button class="btn btn-secondary btn-sm" onclick="expandChart('loss')" title="Expand high-resolution view">⤢ Expand</button>
+                <button class="btn btn-secondary btn-sm" onclick="expandChart('loss')"
+                  title="Expand high-resolution view">⤢ Expand</button>
                 <button class="btn btn-secondary btn-sm" onclick="charts.loss.exportImage()">Export PNG</button>
               </div>
             </div>
             <div class="chart-canvas-container">
-              <canvas id="chart-loss" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+              <canvas id="chart-loss"
+                style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
             </div>
           </div>
 
@@ -340,12 +377,14 @@
             <div class="chart-header">
               <h3>Consensus Cosine Alignment vs Round</h3>
               <div class="chart-action-group">
-                <button class="btn btn-secondary btn-sm" onclick="expandChart('cosineSim')" title="Expand high-resolution view">⤢ Expand</button>
+                <button class="btn btn-secondary btn-sm" onclick="expandChart('cosineSim')"
+                  title="Expand high-resolution view">⤢ Expand</button>
                 <button class="btn btn-secondary btn-sm" onclick="charts.cosineSim.exportImage()">Export PNG</button>
               </div>
             </div>
             <div class="chart-canvas-container">
-              <canvas id="chart-cosine-sim" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+              <canvas id="chart-cosine-sim"
+                style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
             </div>
           </div>
 
@@ -354,12 +393,15 @@
             <div class="chart-header">
               <h3>Client Gradient L2 Norm ||Δw|| vs Round</h3>
               <div class="chart-action-group">
-                <button class="btn btn-secondary btn-sm" onclick="expandChart('gradientNorms')" title="Expand high-resolution view">⤢ Expand</button>
-                <button class="btn btn-secondary btn-sm" onclick="charts.gradientNorms.exportImage()">Export PNG</button>
+                <button class="btn btn-secondary btn-sm" onclick="expandChart('gradientNorms')"
+                  title="Expand high-resolution view">⤢ Expand</button>
+                <button class="btn btn-secondary btn-sm" onclick="charts.gradientNorms.exportImage()">Export
+                  PNG</button>
               </div>
             </div>
             <div class="chart-canvas-container">
-              <canvas id="chart-gradient-norms" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+              <canvas id="chart-gradient-norms"
+                style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
             </div>
           </div>
 
@@ -368,12 +410,15 @@
             <div class="chart-header">
               <h3>Client Participation (Accepted Updates)</h3>
               <div class="chart-action-group">
-                <button class="btn btn-secondary btn-sm" onclick="expandChart('participation')" title="Expand high-resolution view">⤢ Expand</button>
-                <button class="btn btn-secondary btn-sm" onclick="charts.participation.exportImage()">Export PNG</button>
+                <button class="btn btn-secondary btn-sm" onclick="expandChart('participation')"
+                  title="Expand high-resolution view">⤢ Expand</button>
+                <button class="btn btn-secondary btn-sm" onclick="charts.participation.exportImage()">Export
+                  PNG</button>
               </div>
             </div>
             <div class="chart-canvas-container">
-              <canvas id="chart-participation" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+              <canvas id="chart-participation"
+                style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
             </div>
           </div>
 
@@ -382,12 +427,14 @@
             <div class="chart-header">
               <h3>Cumulative Blockchain Growth</h3>
               <div class="chart-action-group">
-                <button class="btn btn-secondary btn-sm" onclick="expandChart('blockchain')" title="Expand high-resolution view">⤢ Expand</button>
+                <button class="btn btn-secondary btn-sm" onclick="expandChart('blockchain')"
+                  title="Expand high-resolution view">⤢ Expand</button>
                 <button class="btn btn-secondary btn-sm" onclick="charts.blockchain.exportImage()">Export PNG</button>
               </div>
             </div>
             <div class="chart-canvas-container">
-              <canvas id="chart-blockchain" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+              <canvas id="chart-blockchain"
+                style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
             </div>
           </div>
 
@@ -396,12 +443,14 @@
             <div class="chart-header">
               <h3>Admission & Stage Latency vs Round</h3>
               <div class="chart-action-group">
-                <button class="btn btn-secondary btn-sm" onclick="expandChart('latency')" title="Expand high-resolution view">⤢ Expand</button>
+                <button class="btn btn-secondary btn-sm" onclick="expandChart('latency')"
+                  title="Expand high-resolution view">⤢ Expand</button>
                 <button class="btn btn-secondary btn-sm" onclick="charts.latency.exportImage()">Export PNG</button>
               </div>
             </div>
             <div class="chart-canvas-container">
-              <canvas id="chart-latency" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+              <canvas id="chart-latency"
+                style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
             </div>
           </div>
         </div>
@@ -412,10 +461,12 @@
             <div>
               <h3>Recent Blockchain Model Uploads (Quorum Verified Transactions)</h3>
               <p style="font-size:12.5px; color:var(--text-secondary); margin-top:2px;">
-                Verified client parameter deltas ($\Delta w$) cryptographically sealed into the distributed ledger with Ed25519 signatures.
+                Verified client parameter deltas ($\Delta w$) cryptographically sealed into the distributed ledger with
+                Ed25519 signatures.
               </p>
             </div>
-            <button class="btn btn-secondary btn-sm" onclick="document.querySelector('[data-tab=blockchain]').click()">View All in Explorer →</button>
+            <button class="btn btn-secondary btn-sm"
+              onclick="document.querySelector('[data-tab=blockchain]').click()">View All in Explorer →</button>
           </div>
           <div class="table-responsive">
             <table>
@@ -447,16 +498,20 @@
         <div class="card" style="margin-bottom: 20px;">
           <h3 style="margin-bottom: 8px;">Federated Learning Clients & Cryptographic Identities</h3>
           <p style="font-size: 13px; color: var(--text-secondary);">
-            Every client possesses a unique <strong>Ed25519 identity keypair</strong>, holds an independent non-IID Dirichlet partition of Fashion-MNIST, performs local gradient training, and produces signed SHA-256 update commitments. Click any client to inspect class distribution, layer weights, and proofs.
+            Every client possesses a unique <strong>Ed25519 identity keypair</strong>, holds an independent non-IID
+            Dirichlet partition of Fashion-MNIST, performs local gradient training, and produces signed SHA-256 update
+            commitments. Click any client to inspect class distribution, layer weights, and proofs.
           </p>
         </div>
 
         <!-- Clients Overview Table -->
         <div class="card" style="margin-bottom: 20px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+          <div
+            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
             <div>
               <h3 style="margin-bottom:2px;">Federation Clients & Permanent Trust Ledger</h3>
-              <p style="font-size:12.5px; color:var(--text-secondary);">Immutable client scores determine admission eligibility. Scores &lt; 40% are automatically quarantined at the gate.</p>
+              <p style="font-size:12.5px; color:var(--text-secondary);">Immutable client scores determine admission
+                eligibility. Scores &lt; 40% are automatically quarantined at the gate.</p>
             </div>
             <div style="display:flex; gap:8px;">
               <button class="btn btn-secondary btn-sm" onclick="resetAllClientScores()">↺ Reset All Scores</button>
@@ -493,7 +548,8 @@
             <div>
               <h3>Client Weights & Gradient Delta Transparency</h3>
               <p style="font-size:12.5px; color:var(--text-secondary); margin-top:2px;">
-                Layer-by-layer parameter update magnitudes and consensus alignment score ($\cos(\Delta w_i, \Delta w_{\text{global}})$).
+                Layer-by-layer parameter update magnitudes and consensus alignment score (Cosine Similarity: Client vs
+                Global Update).
               </p>
             </div>
             <button class="btn btn-secondary btn-sm" onclick="loadClients()">⟳ Refresh Weights</button>
@@ -514,7 +570,8 @@
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
               <label style="font-size:12px; color:var(--text-secondary);">Filter Client:</label>
-              <select id="select-client-log" onchange="renderFilteredClientLogs()" style="padding:4px 8px; font-size:12px;">
+              <select id="select-client-log" onchange="renderFilteredClientLogs()"
+                style="padding:4px 8px; font-size:12px;">
                 <option value="all">All Clients</option>
               </select>
             </div>
@@ -547,23 +604,27 @@
               </div>
 
               <div>
-                <label style="display:block; margin-bottom:4px; color:var(--text-secondary);">Non-IID Dirichlet Alpha (α):</label>
+                <label style="display:block; margin-bottom:4px; color:var(--text-secondary);">Non-IID Dirichlet Alpha
+                  (α):</label>
                 <input type="number" id="input-alpha" value="0.5" step="0.1" min="0.1" max="5.0" style="width:100%;">
                 <span style="font-size:11px; color:var(--text-muted);">Lower = more skewed class distribution</span>
               </div>
 
               <div>
-                <label style="display:block; margin-bottom:4px; color:var(--text-secondary);">Local Epochs per Round:</label>
+                <label style="display:block; margin-bottom:4px; color:var(--text-secondary);">Local Epochs per
+                  Round:</label>
                 <input type="number" id="input-epochs" value="2" min="1" max="5" style="width:100%;">
               </div>
 
               <div>
-                <label style="display:block; margin-bottom:4px; color:var(--text-secondary);">Learning Rate (SGD):</label>
+                <label style="display:block; margin-bottom:4px; color:var(--text-secondary);">Learning Rate
+                  (SGD):</label>
                 <input type="number" id="input-lr" value="0.03" step="0.01" min="0.001" max="0.5" style="width:100%;">
               </div>
 
               <div>
-                <label style="display:block; margin-bottom:4px; color:var(--text-secondary);">Blockchain Nodes & Quorum:</label>
+                <label style="display:block; margin-bottom:4px; color:var(--text-secondary);">Blockchain Nodes &
+                  Quorum:</label>
                 <div style="display:flex; gap:8px;">
                   <input type="number" id="input-nodes" value="3" min="1" max="7" style="width:50%;" title="Nodes">
                   <input type="number" id="input-quorum" value="2" min="1" max="7" style="width:50%;" title="Quorum">
@@ -576,19 +637,24 @@
               </div>
 
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
-                <button class="btn btn-success" id="btn-start-exp" style="grid-column: span 2;">▶ START EXPERIMENT</button>
+                <button class="btn btn-success" id="btn-start-exp" style="grid-column: span 2;">▶ START
+                  EXPERIMENT</button>
                 <button class="btn btn-warning" id="btn-pause-exp">⏸ Pause</button>
                 <button class="btn btn-primary" id="btn-resume-exp">▶ Resume</button>
                 <button class="btn btn-danger" id="btn-stop-exp">⏹ Stop</button>
                 <button class="btn btn-secondary" id="btn-reset-exp">↺ Reset</button>
-                <button class="btn btn-danger" id="btn-inject-malice" style="grid-column: span 2; background: #e11d48; color: #ffffff; border: 1.5px solid var(--ink); box-shadow: var(--shadow-sm); font-weight:700; letter-spacing:0.3px;">☣️ ADD INFECTED CLIENT (MALICIOUS AGENT)</button>
+                <button class="btn btn-danger" id="btn-inject-malice"
+                  style="grid-column: span 2; background: #e11d48; color: #ffffff; border: 1.5px solid var(--border-dark); box-shadow: var(--shadow-flat-sm); font-weight:700; font-size:12.5px; padding:9px 12px; white-space:normal; line-height:1.3; text-align:center;">☣️
+                  Inject Malicious Client</button>
               </div>
-              <div id="infected-client-status-box" style="margin-top:8px; padding:10px 14px; background:#fff1f2; border:1.5px solid #fda4af; border-radius:12px; font-size:11.5px; display:none;">
+              <div id="infected-client-status-box"
+                style="margin-top:8px; padding:10px 14px; background:#fff1f2; border:1.5px solid #fda4af; border-radius:12px; font-size:11.5px; display:none;">
                 <div style="display:flex; align-items:center; justify-content:space-between;">
                   <span style="color:#e11d48; font-weight:700;">☣️ Rogue Node Active:</span>
                   <span id="infected-client-badge" class="badge badge-danger">1 INFECTED</span>
                 </div>
-                <div style="color:var(--text-secondary); margin-top:3px; font-size:11px;">Randomly injects poisoned gradients, broken weights, and tampered commitments during rounds.</div>
+                <div style="color:var(--text-secondary); margin-top:3px; font-size:11px;">Randomly injects poisoned
+                  gradients, broken weights, and tampered commitments during rounds.</div>
               </div>
             </div>
           </div>
@@ -607,8 +673,10 @@
             <div class="chart-header">
               <h4>Training Time per Round</h4>
             </div>
-            <div class="chart-canvas-container" style="height:180px; min-height:180px; max-height:180px; margin-bottom: 16px;">
-              <canvas id="chart-time" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+            <div class="chart-canvas-container"
+              style="height:180px; min-height:180px; max-height:180px; margin-bottom: 16px;">
+              <canvas id="chart-time"
+                style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
             </div>
 
             <h4 style="margin-bottom: 8px; font-size: 13px;">Live Activity Feed</h4>
@@ -628,9 +696,12 @@
         <!-- Header + Verify Button -->
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px;">
           <div>
-            <h2 style="font-size:18px; font-weight:800; color:var(--text-primary); margin-bottom:4px;">⛓ Distributed Blockchain Ledger</h2>
-            <p style="font-size:12.5px; color:var(--text-secondary); max-width:620px; line-height:1.6; font-weight:600;">
-              Cryptographically chained SHA-256 blocks recording every FL event — Round Start, Update Submission, FedAvg Aggregation, Round End — across all replicated ledger nodes with quorum consensus.
+            <h2 style="font-size:18px; font-weight:800; color:var(--text-primary); margin-bottom:4px;">⛓ Distributed
+              Blockchain Ledger</h2>
+            <p
+              style="font-size:12.5px; color:var(--text-secondary); max-width:620px; line-height:1.6; font-weight:600;">
+              Cryptographically chained SHA-256 blocks recording every FL event — Round Start, Update Submission, FedAvg
+              Aggregation, Round End — across all replicated ledger nodes with quorum consensus.
             </p>
           </div>
           <button class="btn btn-primary" id="btn-verify-chain" style="flex-shrink:0;">
@@ -664,8 +735,10 @@
 
         <!-- View Toggle -->
         <div class="filter-pills" style="margin-bottom:16px;">
-          <button class="filter-pill active" id="pill-all-blocks" onclick="switchBlockchainView('blocks')">📦 All Ledger Blocks</button>
-          <button class="filter-pill" id="pill-uploads" onclick="switchBlockchainView('uploads')">⚡ Client Tx Uploads</button>
+          <button class="filter-pill active" id="pill-all-blocks" onclick="switchBlockchainView('blocks')">📦 All Ledger
+            Blocks</button>
+          <button class="filter-pill" id="pill-uploads" onclick="switchBlockchainView('uploads')">⚡ Client Tx
+            Uploads</button>
         </div>
 
         <!-- Blocks View -->
@@ -729,23 +802,6 @@
           </div>
         </div>
 
-        <!-- Model Accuracy & Non-IID Convergence Documentation -->
-        <div class="card" style="margin-bottom: 20px; border-left: 3px solid var(--accent-cyan);">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-            <div>
-              <h3 style="color:var(--accent-cyan); margin-bottom:6px;">Model Accuracy & Non-IID Dirichlet Convergence Analysis</h3>
-              <p style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
-                <strong>Baseline vs Converged Comparison:</strong> Initial 5-round smoke testing achieved <strong>66.57%</strong> accuracy due to early stopping and limited mini-batches (20 max batches/client). Under full federated optimization (10 rounds, 2 local epochs, 40 batches, $\text{lr}=0.03, \text{momentum}=0.9$), global test accuracy reaches <strong>83.88%</strong> (loss: <strong>0.4281</strong>).
-              </p>
-              <div style="display:flex; gap:16px; margin-top:10px; font-size:12px; color:var(--text-muted);">
-                <div>• Dataset: <strong>Fashion-MNIST (10 classes, 60,000 train / 10,000 test)</strong></div>
-                <div>• Non-IID Dirichlet Skew: <strong>α = 0.5 (Severe client label skew)</strong></div>
-                <div>• Theoretical SmallCNN Ceiling: <strong>~85-88% on Non-IID FL</strong></div>
-              </div>
-            </div>
-            <span class="badge badge-success" style="font-size:12px; padding:4px 10px;">83.9% VERIFIED ACCURACY</span>
-          </div>
-        </div>
 
         <div class="card" style="margin-bottom: 20px;">
           <strong>Current Model SHA-256 Parameter Hash:</strong>
@@ -753,8 +809,9 @@
         </div>
 
         <!-- Live Inference Section -->
-        <div style="display: grid; grid-template-columns: 1fr 340px; gap: 20px;">
-          <div class="card">
+        <div
+          style="display: grid; grid-template-columns: 1fr 350px; gap: 20px; align-items: stretch; margin-bottom: 20px;">
+          <div class="card" style="margin-bottom: 0; display: flex; flex-direction: column;">
             <h3 style="margin-bottom:14px;">Fashion-MNIST Interactive Test Gallery</h3>
             <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px; margin-bottom:16px;">
               Click any real test image to evaluate it with the trained global model weights live:
@@ -763,45 +820,76 @@
               <!-- Dynamically populated 28x28 sample items -->
             </div>
 
-            <div style="margin-top: 20px; display: flex; align-items: center; gap: 12px; border-top: 1px solid #1e293b; padding-top: 16px;">
-              <span style="font-size: 13px; color: var(--text-secondary);">Or test test-set index (0–9999):</span>
+            <div
+              style="margin-top: 20px; display: flex; align-items: center; gap: 12px; border-top: 1.5px solid var(--border-subtle); padding-top: 16px;">
+              <span style="font-size: 13px; color: var(--text-secondary); font-weight:600;">Or test test-set index
+                (0–9999):</span>
               <input type="number" id="input-sample-idx" value="42" min="0" max="9999" style="width: 100px;">
               <button class="btn btn-secondary btn-sm" id="btn-manual-infer">Evaluate Sample</button>
             </div>
-          </div>
 
-          <div style="display: flex; flex-direction: column; gap: 20px;">
-            <!-- Inference Results Box -->
-            <div class="card">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h3 style="margin:0;">Live Prediction</h3>
-                <span class="badge" id="inf-match-badge">—</span>
+            <!-- Horizontal Separator -->
+            <hr style="border: 0; border-top: 1.5px solid var(--border-subtle); margin: 22px 0 18px 0;">
+
+            <!-- Upload Custom Image -->
+            <div style="margin-top: auto;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                <h4
+                  style="margin:0; font-size:15px; font-weight:800; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+                  <span>🖼️</span> Upload Custom Image
+                </h4>
+                <span class="badge badge-info" style="font-size:11px;">28×28 Grayscale</span>
               </div>
-
-              <div style="font-size: 13px; line-height: 1.8;">
-                <p>Ground Truth Label: <strong id="inf-true-label" style="color:var(--text-primary); font-weight:800;">—</strong></p>
-                <p>Model Prediction: <strong id="inf-pred-label" style="color:var(--accent-purple-dark); font-size:16px; font-weight:800;">—</strong></p>
-                <p>Confidence: <strong id="inf-conf">0.0%</strong></p>
-
-                <h4 style="margin-top: 14px; margin-bottom: 8px; font-size: 12px; color: var(--text-secondary); font-weight:700;">Class Probabilities (Top 5):</h4>
-                <div id="inf-prob-bars">
-                  <!-- Dynamically populated probability bars -->
+              <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px;">
+                Upload a 28×28 grayscale image of a clothing item for the model to predict.
+              </p>
+              <div style="display: grid; grid-template-columns: 160px 1fr; gap: 16px; align-items: center;">
+                <div
+                  style="display:flex; justify-content:center; align-items:center; background:var(--bg-card-subtle); border:1.5px dashed var(--border-subtle); border-radius:10px; padding:10px; height:140px;">
+                  <canvas id="upload-preview" width="28" height="28"
+                    style="image-rendering: pixelated; width:120px; height:120px; border:1.5px solid var(--border-dark); border-radius:6px; background:#ffffff;"></canvas>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <input type="file" id="predict-upload" accept="image/*" style="font-size:12px;">
+                  <button class="btn btn-primary btn-sm" id="btn-upload-infer"
+                    style="width:fit-content; padding:8px 18px;">🚀 Predict Uploaded Image</button>
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- Custom Image Upload Card -->
-            <div class="card" style="border-left: 3px solid var(--accent-purple);">
-              <h3 style="margin:0 0 12px 0;">Upload Custom Image</h3>
-              <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; font-weight:600;">
-                Upload a 28x28 grayscale image of a clothing item for the model to predict.
-              </p>
-              <div style="display: flex; flex-direction: column; gap: 12px;">
-                <input type="file" id="predict-upload" accept="image/*" style="font-size:12px;">
-                <div style="display:flex; justify-content:center; align-items:center; background:var(--bg-card-subtle); border:1.5px dashed var(--border-subtle); border-radius:10px; padding:10px; height:140px;">
-                  <canvas id="upload-preview" width="28" height="28" style="image-rendering: pixelated; width:128px; height:128px; border:1.5px solid var(--border-dark); border-radius:6px; background:#ffffff;"></canvas>
+          <!-- Inference Results Box (Exact Match Height) -->
+          <div class="card"
+            style="border-left: 3px solid var(--accent-purple); margin-bottom: 0; height: 100%; box-sizing: border-box; display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3 style="margin:0;">Live Prediction</h3>
+              <span class="badge" id="inf-match-badge">—</span>
+            </div>
+
+            <div style="font-size: 13px; line-height: 1.8; flex: 1; display: flex; flex-direction: column;">
+              <p>Ground Truth Label: <strong id="inf-true-label"
+                  style="color:var(--text-primary); font-weight:800;">—</strong></p>
+              <p>Model Prediction: <strong id="inf-pred-label"
+                  style="color:var(--accent-purple-dark); font-size:16px; font-weight:800;">—</strong></p>
+              <p>Confidence: <strong id="inf-conf">0.0%</strong></p>
+
+              <h4
+                style="margin-top: 14px; margin-bottom: 8px; font-size: 12px; color: var(--text-secondary); font-weight:700;">
+                Class Probabilities (Top 5):</h4>
+              <div id="inf-prob-bars" style="margin-bottom: 16px;">
+                <!-- Dynamically populated probability bars -->
+              </div>
+
+              <!-- Engine Telemetry Badge -->
+              <div
+                style="margin-top: auto; padding: 12px 14px; background: var(--bg-card-subtle); border-radius: 10px; border: 1.5px solid var(--border-subtle); font-size: 11.5px; color: var(--text-secondary); line-height: 1.6;">
+                <div
+                  style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                  <span>🧠</span> Inference Engine Telemetry
                 </div>
-                <button class="btn btn-primary btn-sm" id="btn-upload-infer" style="width:100%;">🚀 Predict Uploaded Image</button>
+                Architecture: <strong>SmallCNN (52,138 params)</strong><br>
+                Output: <strong>Softmax 10-Class Distribution</strong><br>
+                Forward Pass: <strong>~0.16 ms / sample</strong>
               </div>
             </div>
           </div>
@@ -824,16 +912,22 @@
            ══════════════════════════════════════════════════════════════════════ -->
       <section id="page-security" class="page">
         <!-- SOC Command Banner -->
-        <div class="card" style="margin-bottom: 20px; background: #fff1f2; border: 1.5px solid var(--ink); border-left: 6px solid #e11d48;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 14px;">
+        <div class="card"
+          style="margin-bottom: 20px; background: #fff1f2; border: 1.5px solid var(--ink); border-left: 6px solid #e11d48;">
+          <div
+            style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 14px;">
             <div>
               <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
                 <span style="font-size: 22px;">🛡️</span>
-                <h2 style="color: #e11d48; font-size: 20px; font-weight: 800; letter-spacing: 0.5px; margin: 0;">SECURITY OPERATIONS CENTER (SOC) & ADMISSION FIREWALL</h2>
+                <h2 style="color: #e11d48; font-size: 20px; font-weight: 800; letter-spacing: 0.5px; margin: 0;">
+                  SECURITY OPERATIONS CENTER (SOC) & ADMISSION FIREWALL</h2>
                 <span class="badge badge-danger" style="animation: pulse 2s infinite;">FIREWALL ACTIVE</span>
               </div>
               <p style="font-size: 13px; color: var(--text-secondary); max-width: 900px; line-height: 1.6; margin: 0;">
-                The decentralized admission firewall actively monitors incoming updates, intercepts poisoned gradients, catches parameter byte tampering, and quarantines unauthorized nodes. Clients caught performing malicious actions receive <strong style="color:#e11d48;">permanent trust score penalties</strong> and are rejected at the gate before model aggregation.
+                The decentralized admission firewall actively monitors incoming updates, intercepts poisoned gradients,
+                catches parameter byte tampering, and quarantines unauthorized nodes. Clients caught performing
+                malicious actions receive <strong style="color:#e11d48;">permanent trust score penalties</strong> and
+                are rejected at the gate before model aggregation.
               </p>
             </div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
@@ -844,7 +938,8 @@
         </div>
 
         <!-- Real-Time Threat Telemetry HUD -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px;">
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px;">
           <div class="card kpi-card" style="border-top: 3px solid var(--accent-rose);">
             <span class="kpi-label">Intercepted Threats</span>
             <span class="kpi-val" id="soc-threats-count" style="color:var(--accent-rose);">0</span>
@@ -873,12 +968,15 @@
             <div style="display: flex; align-items: center; gap: 10px;">
               <span style="font-size: 18px;">🎯</span>
               <div>
-                <strong style="color: var(--text-primary); font-size: 13.5px;">Select Client to Launch Attack Vector:</strong>
-                <span style="font-size: 12px; color: var(--text-muted); display: block;">The system will identify this exact client as the attacker, catch them at the admission gate, and slash their score.</span>
+                <strong style="color: var(--text-primary); font-size: 13.5px;">Select Client to Launch Attack
+                  Vector:</strong>
+                <span style="font-size: 12px; color: var(--text-muted); display: block;">The system will identify this
+                  exact client as the attacker, catch them at the admission gate, and slash their score.</span>
               </div>
             </div>
             <div style="display: flex; align-items: center; gap: 10px;">
-              <select id="select-attacker-client" style="padding: 8px 14px; background: #ffffff; border: 1.5px solid var(--border-color); border-radius: 12px; color: var(--text-primary); font-size: 12.5px; font-weight: 600; font-family: inherit;">
+              <select id="select-attacker-client"
+                style="padding: 8px 14px; background: #ffffff; border: 1.5px solid var(--border-color); border-radius: 12px; color: var(--text-primary); font-size: 12.5px; font-weight: 600; font-family: inherit;">
                 <option value="">Auto-select (Infected or First Client)</option>
               </select>
             </div>
@@ -886,46 +984,62 @@
         </div>
 
         <!-- Live Forensic Interception Result Banner -->
-        <div id="attack-result-banner" class="card" style="display: none; margin-bottom: 24px; border: var(--card-border); border-left: 6px solid #e11d48; background: #ffffff;">
+        <div id="attack-result-banner" class="card"
+          style="display: none; margin-bottom: 24px; border: var(--card-border); border-left: 6px solid #e11d48; background: #ffffff;">
           <div style="display: flex; justify-content: space-between; align-items: flex-start;">
             <div style="display: flex; align-items: center; gap: 10px;">
               <span style="font-size: 26px;">🚨</span>
               <div>
-                <h3 id="attack-banner-title" style="color: #e11d48; margin: 0; font-size: 17px; font-weight: 800;">ATTACK INTERCEPTED & ADVERSARY QUARANTINED</h3>
-                <span id="attack-banner-time" class="mono" style="font-size: 11px; color: var(--text-muted);">Timestamp</span>
+                <h3 id="attack-banner-title" style="color: #e11d48; margin: 0; font-size: 17px; font-weight: 800;">
+                  ATTACK INTERCEPTED & ADVERSARY QUARANTINED</h3>
+                <span id="attack-banner-time" class="mono"
+                  style="font-size: 11px; color: var(--text-muted);">Timestamp</span>
               </div>
             </div>
-            <button class="btn btn-secondary btn-sm" onclick="document.getElementById('attack-result-banner').style.display='none'">✕ Dismiss</button>
+            <button class="btn btn-secondary btn-sm"
+              onclick="document.getElementById('attack-result-banner').style.display='none'">✕ Dismiss</button>
           </div>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-top: 14px; padding: 14px; background: var(--bg-card-subtle); border-radius: 14px; border: 1px solid var(--border-subtle);">
+          <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-top: 14px; padding: 14px; background: var(--bg-card-subtle); border-radius: 14px; border: 1px solid var(--border-subtle);">
             <div>
-              <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Attacker Identity:</span>
-              <div id="banner-attacker-id" class="mono" style="font-size: 13px; color: #e11d48; font-weight: 700; margin-top: 2px;">—</div>
+              <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Attacker
+                Identity:</span>
+              <div id="banner-attacker-id" class="mono"
+                style="font-size: 13px; color: #e11d48; font-weight: 700; margin-top: 2px;">—</div>
             </div>
             <div>
-              <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Caught & Identified Entity:</span>
-              <div id="banner-caught-id" class="mono" style="font-size: 13px; color: #0284c7; font-weight: 700; margin-top: 2px;">—</div>
+              <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Caught & Identified
+                Entity:</span>
+              <div id="banner-caught-id" class="mono"
+                style="font-size: 13px; color: #0284c7; font-weight: 700; margin-top: 2px;">—</div>
             </div>
             <div>
-              <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Defense Mechanism:</span>
-              <div id="banner-defense-layer" style="font-size: 12.5px; color: #059669; font-weight: 600; margin-top: 2px;">—</div>
+              <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Defense
+                Mechanism:</span>
+              <div id="banner-defense-layer"
+                style="font-size: 12.5px; color: #059669; font-weight: 600; margin-top: 2px;">—</div>
             </div>
             <div>
-              <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Permanent Score Impact:</span>
-              <div id="banner-trust-impact" style="font-size: 13px; color: #d97706; font-weight: 700; margin-top: 2px;">—</div>
+              <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Permanent Score
+                Impact:</span>
+              <div id="banner-trust-impact" style="font-size: 13px; color: #d97706; font-weight: 700; margin-top: 2px;">
+                —</div>
             </div>
           </div>
 
-          <div id="banner-forensics-text" style="margin-top: 10px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.5;"></div>
+          <div id="banner-forensics-text"
+            style="margin-top: 10px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.5;"></div>
         </div>
 
         <!-- 6 Interactive Threat Vectors -->
         <h3 style="margin-bottom: 14px; font-size: 16px; display:flex; align-items:center; gap:8px;">
           <span>⚡ Simulated Threat Injection Vectors</span>
-          <span style="font-size: 12px; color: var(--text-muted); font-weight: normal;">(Click to execute attack against defense firewall)</span>
+          <span style="font-size: 12px; color: var(--text-muted); font-weight: normal;">(Click to execute attack against
+            defense firewall)</span>
         </h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 24px;">
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 24px;">
           <!-- Vector 1: MITM Byte Tampering -->
           <div class="card threat-card" style="border-top: 3px solid #fb7185;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -933,10 +1047,13 @@
               <span class="badge badge-danger">-40% TRUST</span>
             </div>
             <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
-              Simulates a Man-in-the-Middle altering 100 model parameters post-signing. Tests SHA-256 domain-separated commitment firewall.
+              Simulates a Man-in-the-Middle altering 100 model parameters post-signing. Tests SHA-256 domain-separated
+              commitment firewall.
             </p>
-            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>Update Commitment Verification (SHA-256)</strong></div>
-            <button class="btn btn-danger btn-sm" id="btn-attack-tamper" style="width:100%;">⚡ EXECUTE MITM TAMPERING</button>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>Update
+                Commitment Verification (SHA-256)</strong></div>
+            <button class="btn btn-danger btn-sm" id="btn-attack-tamper" style="width:100%;">⚡ EXECUTE MITM
+              TAMPERING</button>
           </div>
 
           <!-- Vector 2: Commitment Forgery -->
@@ -946,10 +1063,13 @@
               <span class="badge badge-warning">-35% TRUST</span>
             </div>
             <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
-              Attacker forges commitment hash while attempting to reuse client signature. Tests Ed25519 cryptographic binding.
+              Attacker forges commitment hash while attempting to reuse client signature. Tests Ed25519 cryptographic
+              binding.
             </p>
-            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>Ed25519 Curve25519 Signature Verification</strong></div>
-            <button class="btn btn-warning btn-sm" id="btn-attack-forgery" style="width:100%;">⚡ EXECUTE FORGERY ATTACK</button>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>Ed25519
+                Curve25519 Signature Verification</strong></div>
+            <button class="btn btn-warning btn-sm" id="btn-attack-forgery" style="width:100%;">⚡ EXECUTE FORGERY
+              ATTACK</button>
           </div>
 
           <!-- Vector 3: Rogue Identity -->
@@ -959,10 +1079,13 @@
               <span class="badge badge-info">-50% TRUST</span>
             </div>
             <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
-              Rogue unauthorized entity submits update with unregistered keypair. Tests permissioned admission registry authorization.
+              Rogue unauthorized entity submits update with unregistered keypair. Tests permissioned admission registry
+              authorization.
             </p>
-            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>Admission Registry Key Authorization</strong></div>
-            <button class="btn btn-primary btn-sm" id="btn-attack-unauth" style="width:100%;">⚡ EXECUTE ROGUE IDENTITY</button>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>Admission
+                Registry Key Authorization</strong></div>
+            <button class="btn btn-primary btn-sm" id="btn-attack-unauth" style="width:100%;">⚡ EXECUTE ROGUE
+              IDENTITY</button>
           </div>
 
           <!-- Vector 4: Blockchain Tampering -->
@@ -972,10 +1095,13 @@
               <span class="badge badge-danger">-100% QUARANTINED</span>
             </div>
             <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
-              Direct mutation of past committed block participant list on ledger node 0. Tests cryptographic prev_hash integrity.
+              Direct mutation of past committed block participant list on ledger node 0. Tests cryptographic prev_hash
+              integrity.
             </p>
-            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>Cryptographic Hash Chaining (prev_hash)</strong></div>
-            <button class="btn btn-secondary btn-sm" id="btn-attack-block" style="width:100%;">⚡ EXECUTE LEDGER REWRITE</button>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>Cryptographic
+                Hash Chaining (prev_hash)</strong></div>
+            <button class="btn btn-secondary btn-sm" id="btn-attack-block" style="width:100%;">⚡ EXECUTE LEDGER
+              REWRITE</button>
           </div>
 
           <!-- Vector 5: Gradient Direction Poisoning -->
@@ -985,10 +1111,13 @@
               <span class="badge badge-danger">-25% TRUST</span>
             </div>
             <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
-              Inverts and amplifies local gradient vector (-3.0x) to steer model away from convergence. Tests G2 Median-Cosine filter.
+              Inverts and amplifies local gradient vector (-3.0x) to steer model away from convergence. Tests G2
+              Median-Cosine filter.
             </p>
-            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>G2 Multi-Round Cosine Defense & Reputation</strong></div>
-            <button class="btn btn-danger btn-sm" id="btn-attack-poison" style="width:100%;">⚡ EXECUTE GRADIENT POISONING</button>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>G2 Multi-Round
+                Cosine Defense & Reputation</strong></div>
+            <button class="btn btn-danger btn-sm" id="btn-attack-poison" style="width:100%;">⚡ EXECUTE GRADIENT
+              POISONING</button>
           </div>
 
           <!-- Vector 6: Exploding Norm Anomaly -->
@@ -998,19 +1127,24 @@
               <span class="badge badge-warning">-30% TRUST</span>
             </div>
             <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
-              Submits extreme update norm (L2 = 25.0 > 15.0 max limit) to destabilize global weights. Tests statistical anomaly gate.
+              Submits extreme update norm (L2 = 25.0 > 15.0 max limit) to destabilize global weights. Tests statistical
+              anomaly gate.
             </p>
-            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>Dynamic Statistical L2 Norm Anomaly Firewall</strong></div>
-            <button class="btn btn-warning btn-sm" id="btn-attack-norm" style="width:100%;">⚡ EXECUTE EXPLODING NORM</button>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>Dynamic
+                Statistical L2 Norm Anomaly Firewall</strong></div>
+            <button class="btn btn-warning btn-sm" id="btn-attack-norm" style="width:100%;">⚡ EXECUTE EXPLODING
+              NORM</button>
           </div>
         </div>
 
         <!-- Live Threat Interception Feed & Forensics Log Table -->
         <div class="card" style="margin-bottom: 24px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
             <div>
               <h3 style="margin-bottom: 2px;">Live Threat Interception Feed & Forensics</h3>
-              <p style="font-size: 12.5px; color: var(--text-secondary);">Audit record of all intercepted malicious attacks, identified attackers, and score slashes.</p>
+              <p style="font-size: 12.5px; color: var(--text-secondary);">Audit record of all intercepted malicious
+                attacks, identified attackers, and score slashes.</p>
             </div>
             <button class="btn btn-secondary btn-sm" onclick="loadSecuritySection()">⟳ Refresh Feed</button>
           </div>
@@ -1102,15 +1236,18 @@
            TAB 7: LIVE EVENT LOGS
            ══════════════════════════════════════════════════════════════════════ -->
       <section id="page-logs" class="page">
-        <div class="card" style="margin-bottom: 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div class="card"
+          style="margin-bottom: 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
           <div>
             <h3 style="margin-bottom:2px;">Real-Time System & Application Events</h3>
             <p style="font-size: 13px; color: var(--text-secondary);">
-              Streaming execution logs for client training, cryptographic verification, quorum consensus, and FedAvg aggregation.
+              Streaming execution logs for client training, cryptographic verification, quorum consensus, and FedAvg
+              aggregation.
             </p>
           </div>
           <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-            <input type="text" id="log-search-input" placeholder="Search logs..." style="padding:5px 10px; font-size:12px; width:170px;" oninput="filterLogs()">
+            <input type="text" id="log-search-input" placeholder="Search logs..."
+              style="padding:5px 10px; font-size:12px; width:170px;" oninput="filterLogs()">
             <button class="btn btn-secondary btn-sm" onclick="expandAllLogs()">▼ Expand All</button>
             <button class="btn btn-secondary btn-sm" onclick="collapseAllLogs()">▲ Collapse All</button>
             <button class="btn btn-secondary btn-sm" onclick="loadLogs()">⟳ Refresh Logs</button>
@@ -1120,10 +1257,14 @@
 
         <!-- Filter pills for logs -->
         <div class="filter-pills" style="margin-bottom:12px;">
-          <button class="filter-pill active" id="log-filter-all" onclick="setLogCategoryFilter('all')">All Events</button>
-          <button class="filter-pill" id="log-filter-security" onclick="setLogCategoryFilter('security')">🛡 Security</button>
-          <button class="filter-pill" id="log-filter-blockchain" onclick="setLogCategoryFilter('blockchain')">⛓ Blockchain</button>
-          <button class="filter-pill" id="log-filter-training" onclick="setLogCategoryFilter('training')">🧠 Training</button>
+          <button class="filter-pill active" id="log-filter-all" onclick="setLogCategoryFilter('all')">All
+            Events</button>
+          <button class="filter-pill" id="log-filter-security" onclick="setLogCategoryFilter('security')">🛡
+            Security</button>
+          <button class="filter-pill" id="log-filter-blockchain" onclick="setLogCategoryFilter('blockchain')">⛓
+            Blockchain</button>
+          <button class="filter-pill" id="log-filter-training" onclick="setLogCategoryFilter('training')">🧠
+            Training</button>
           <button class="filter-pill" id="log-filter-system" onclick="setLogCategoryFilter('system')">⚙ System</button>
         </div>
 
@@ -1158,10 +1299,13 @@
       <div class="modal-header">
         <div>
           <h3 id="chart-expand-title" style="color:var(--text-primary);">Expanded Chart Analysis</h3>
-          <span style="font-size:11.5px; color:var(--accent-cyan); text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">High-DPI Vector Canvas • Zero Blur</span>
+          <span
+            style="font-size:11.5px; color:var(--accent-cyan); text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">High-DPI
+            Vector Canvas • Zero Blur</span>
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
-          <button class="btn btn-secondary btn-sm" onclick="window.expandedChartInstance?.exportImage(3)">Download High-Res 4K Image</button>
+          <button class="btn btn-secondary btn-sm" onclick="window.expandedChartInstance?.exportImage(3)">Download
+            High-Res 4K Image</button>
           <button class="close-btn" onclick="closeExpandModal()">×</button>
         </div>
       </div>
@@ -1169,7 +1313,8 @@
         <!-- Dynamically populated summary stats -->
       </div>
       <div class="chart-expand-container">
-        <canvas id="chart-expand-canvas" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+        <canvas id="chart-expand-canvas"
+          style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
       </div>
     </div>
   </div>
@@ -1179,7 +1324,8 @@
     <div class="modal-content modal-content-lg">
       <div class="modal-header">
         <h3 id="weights-modal-title">Client Weights & Layer Breakdown</h3>
-        <button class="close-btn" onclick="document.getElementById('weights-modal').classList.remove('active')">×</button>
+        <button class="close-btn"
+          onclick="document.getElementById('weights-modal').classList.remove('active')">×</button>
       </div>
       <div id="weights-modal-body">
         <!-- Dynamically injected -->
@@ -1193,11 +1339,14 @@
       <div class="modal-header">
         <div>
           <h3 style="color:var(--text-primary); margin:0;">🔬 Live Model Evaluation & Test Set Verification</h3>
-          <span style="font-size:11.5px; color:var(--accent-cyan); text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">Ground-Truth PyTorch Forward Pass • 10,000 Fashion-MNIST Samples</span>
+          <span
+            style="font-size:11.5px; color:var(--accent-cyan); text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">Ground-Truth
+            PyTorch Forward Pass • 10,000 Fashion-MNIST Samples</span>
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
           <button class="btn btn-secondary btn-sm" onclick="verifyModelTestSet()">⟳ Re-Verify</button>
-          <button class="close-btn" onclick="document.getElementById('model-verify-modal').classList.remove('active')">×</button>
+          <button class="close-btn"
+            onclick="document.getElementById('model-verify-modal').classList.remove('active')">×</button>
         </div>
       </div>
       <div id="model-verify-body" style="padding: 10px 0;">
@@ -1212,12 +1361,15 @@
       <div class="modal-header">
         <div>
           <h3 style="color:var(--text-primary); margin:0;">📜 Comprehensive Academic System Audit</h3>
-          <span style="font-size:11.5px; color:var(--accent-emerald); text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">5-Pillar Cryptographic & Empirical Verification Certificate</span>
+          <span
+            style="font-size:11.5px; color:var(--accent-emerald); text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">5-Pillar
+            Cryptographic & Empirical Verification Certificate</span>
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
           <button class="btn btn-secondary btn-sm" onclick="downloadAuditReport()">📥 Download Certificate</button>
           <button class="btn btn-secondary btn-sm" onclick="runAcademicAudit()">⟳ Re-Audit</button>
-          <button class="close-btn" onclick="document.getElementById('system-audit-modal').classList.remove('active')">×</button>
+          <button class="close-btn"
+            onclick="document.getElementById('system-audit-modal').classList.remove('active')">×</button>
         </div>
       </div>
       <div id="system-audit-body" style="padding: 10px 0;">
@@ -1231,12 +1383,16 @@
     <div class="modal-content modal-content-lg">
       <div class="modal-header">
         <div>
-          <h3 style="color:var(--text-primary); margin:0;">⏱️ FL Pipeline Stage Latencies & Admission Screening Profile</h3>
-          <span style="font-size:11.5px; color:#06b6d4; text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">Empirical Stage Benchmarks (t_admission, t_train, t_comm, t_verify, t_consensus, t_agg)</span>
+          <h3 style="color:var(--text-primary); margin:0;">⏱️ FL Pipeline Stage Latencies & Admission Screening Profile
+          </h3>
+          <span
+            style="font-size:11.5px; color:#06b6d4; text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">Empirical
+            Stage Benchmarks (t_admission, t_train, t_comm, t_verify, t_consensus, t_agg)</span>
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
           <button class="btn btn-secondary btn-sm" onclick="showLatencyModal()">⟳ Refresh</button>
-          <button class="close-btn" onclick="document.getElementById('latency-modal').classList.remove('active')">×</button>
+          <button class="close-btn"
+            onclick="document.getElementById('latency-modal').classList.remove('active')">×</button>
         </div>
       </div>
       <div id="latency-modal-body" style="padding: 10px 0;">
@@ -1248,4 +1404,5 @@
   <script src="/static/charts.js?v=2.2.0"></script>
   <script src="/static/app.js?v=2.2.0"></script>
 </body>
+
 </html>

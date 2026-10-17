@@ -606,6 +606,8 @@ body {
   display: flex;
   flex-direction: column;
   transition: all 0.15s ease;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .matrix-item:hover {
@@ -628,6 +630,8 @@ body {
   font-weight: 800;
   color: var(--text-primary);
   margin-bottom: 2px;
+  word-break: break-all;
+  overflow-wrap: anywhere;
 }
 
 .matrix-note {
@@ -1443,4 +1447,89 @@ tr:hover td {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #a8a8b4;
+}
+
+/* ── Security Attack Simulation Animation Screen ──────────────────────────── */
+.attack-sim-card {
+  padding: 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.attack-sim-radar {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 18px auto;
+  border-radius: 50%;
+  position: relative;
+  background: radial-gradient(circle, rgba(225, 29, 72, 0.15) 0%, rgba(225, 29, 72, 0.04) 70%, transparent 100%);
+  border: 2px solid rgba(225, 29, 72, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulseGlow 1.8s infinite ease-in-out;
+}
+
+.attack-sim-radar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  border: 1px dashed rgba(225, 29, 72, 0.3);
+  animation: radarRotate 2.5s linear infinite;
+}
+
+.attack-sim-icon {
+  font-size: 38px;
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.35);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 25px 8px rgba(225, 29, 72, 0.2);
+    transform: scale(1.04);
+  }
+}
+
+@keyframes radarRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.attack-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  max-width: 520px;
+  margin: 16px auto 0 auto;
+}
+
+.attack-step-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.attack-step-item.active {
+  background: #fff1f2;
+  border-color: #fda4af;
+  color: #9f1239;
+  font-weight: 600;
 }

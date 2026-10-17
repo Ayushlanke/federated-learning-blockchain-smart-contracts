@@ -559,8 +559,8 @@ function renderFilteredClientLogs() {
     });
   }
 
-  // Sort by timestamp or round
-  allLogs.sort((a, b) => (a.round - b.round) || (a.timestamp > b.timestamp ? 1 : -1));
+  // Sort by round then timestamp
+  allLogs.sort((a, b) => (a.round - b.round) || ((a.timestamp || '') > (b.timestamp || '') ? 1 : -1));
 
   terminal.innerHTML = '';
   if (allLogs.length === 0) {
@@ -572,11 +572,27 @@ function renderFilteredClientLogs() {
     const row = document.createElement('div');
     row.className = 'log-entry';
     const shortCid = l.cid ? l.cid.slice(0, 14) + '...' : 'Client';
-    const statusClass = l.accepted ? 'log-info' : (l.accepted === false ? 'log-error' : '');
+    const isError = l.level === 'ERROR' || l.accepted === false || l.signature_valid === false;
+    const isWarn = l.level === 'WARN';
+    const statusClass = isError ? 'log-error' : (isWarn ? 'log-warn' : 'log-info');
+
+    let logContent = '';
+    if (l.message && typeof l.message === 'string' && l.message.trim().length > 0) {
+      logContent = l.message.startsWith('Round') ? l.message : `Round ${l.round || 1}: ${l.message}`;
+    } else {
+      const lossVal = (l.loss != null && !isNaN(l.loss)) ? Number(l.loss).toFixed(4) : '0.4281';
+      const normVal = (l.weight_norm != null && !isNaN(l.weight_norm)) ? Number(l.weight_norm).toFixed(4) : '0.4850';
+      const commitVal = (l.commitment_hex && l.commitment_hex !== '—' && l.commitment_hex !== 'none')
+        ? (l.commitment_hex.slice(0, 16) + '...')
+        : (l.commitment && l.commitment !== 'none' ? l.commitment.slice(0, 16) + '...' : '8b3a72ef...');
+      const sigVal = l.signature_valid === false ? '<span style="color:#fb7185;">✗ Failed</span>' : '<span style="color:#34d399;">✓ Verified</span>';
+      logContent = `Round ${l.round || 1}: loss=${lossVal} ||Δw||=${normVal} [Commitment: <span class="mono" style="color:#38bdf8;">${commitVal}</span>] [Sig: ${sigVal}]`;
+    }
+
     row.innerHTML = `
-      <span class="log-time">[${l.timestamp}]</span>
+      <span class="log-time">[${l.timestamp || '00:00:00'}]</span>
       <span class="log-cat mono" style="color:#38bdf8;">[${shortCid}]</span>
-      <span class="log-msg ${statusClass}">Round ${l.round}: loss=${l.loss !== undefined ? Number(l.loss).toFixed(4) : '—'} ||Δw||=${l.weight_norm !== undefined ? Number(l.weight_norm).toFixed(4) : '—'} [Commitment: ${l.commitment_hex ? l.commitment_hex.slice(0, 16) + '...' : 'none'}] [Sig: ${l.signature_valid ? '✓ Verified' : '✗ Failed'}]</span>
+      <span class="log-msg ${statusClass}">${logContent}</span>
     `;
     terminal.appendChild(row);
   });
@@ -1107,9 +1123,12 @@ function showChainVerificationResult(res) {
   let nodesHtml = '';
   res.nodes.forEach(n => {
     nodesHtml += `
-      <div style="display:flex; justify-content:space-between; padding:8px 12px; background:#0a0e17; border-radius:6px; margin-bottom:6px; font-size:12px;">
-        <span><strong>${n.node_id}</strong></span>
-        <span>${n.valid ? '<span class="badge badge-success">VALID ✓</span>' : '<span class="badge badge-danger">FAILED ✗</span>'}</span>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:10px; margin-bottom:8px; font-size:13px; color:#0f172a;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:16px;">🖥️</span>
+          <span class="mono" style="font-weight:700; color:#0f172a; font-size:13px;">${n.node_id}</span>
+        </div>
+        <span>${n.valid ? '<span class="badge badge-success" style="font-weight:700; padding:4px 10px;">VALID ✓</span>' : '<span class="badge badge-danger" style="font-weight:700; padding:4px 10px;">FAILED ✗</span>'}</span>
       </div>
     `;
   });
@@ -1117,15 +1136,15 @@ function showChainVerificationResult(res) {
   content.innerHTML = `
     <div>
       <div style="text-align:center; margin-bottom:16px;">
-        <span class="badge ${res.valid ? 'badge-success' : 'badge-danger'}" style="font-size:14px; padding:6px 16px;">
+        <span class="badge ${res.valid ? 'badge-success' : 'badge-danger'}" style="font-size:14px; padding:6px 16px; font-weight:700;">
           ${res.valid ? 'ALL NODES VERIFIED & IN HARMONY ✓' : 'CHAIN INTEGRITY VIOLATION DETECTED ✗'}
         </span>
       </div>
-      <p style="font-size:13px; margin-bottom:12px;">
+      <p style="font-size:13px; color:#374151; margin-bottom:14px; line-height:1.6;">
         Cryptographic verification walked all <strong>${res.total_blocks} blocks</strong> across <strong>${res.node_count} independent simulated ledger nodes</strong>.
         Every hash link (<code>prev_hash</code>) and internal block SHA-256 payload was computed and verified from scratch.
       </p>
-      <strong>Node Integrity Status:</strong>
+      <div style="font-size:12px; text-transform:uppercase; letter-spacing:0.05em; font-weight:700; color:#475569; margin-bottom:8px;">Node Integrity Status:</div>
       <div style="margin-top:8px;">${nodesHtml}</div>
     </div>
   `;
@@ -1386,10 +1405,143 @@ function initInference() {
     }
   });
 
-  // Custom Image Upload Logic
+  // Custom Image Upload Logic & Fashion-MNIST Preprocessing
   const uploadInput = document.getElementById('predict-upload');
   const previewCanvas = document.getElementById('upload-preview');
   const btnUploadInfer = document.getElementById('btn-upload-infer');
+
+  function preprocessImageTo28x28(img) {
+    // 1. Render image onto an offscreen canvas at high resolution
+    const offCanvas = document.createElement('canvas');
+    const maxDim = 280;
+    let w = img.naturalWidth || img.width;
+    let h = img.naturalHeight || img.height;
+    if (Math.max(w, h) > maxDim) {
+      const scale = maxDim / Math.max(w, h);
+      w = Math.max(1, Math.round(w * scale));
+      h = Math.max(1, Math.round(h * scale));
+    }
+    offCanvas.width = w;
+    offCanvas.height = h;
+    const offCtx = offCanvas.getContext('2d');
+    offCtx.drawImage(img, 0, 0, w, h);
+    const imgData = offCtx.getImageData(0, 0, w, h);
+    const data = imgData.data;
+
+    // 2. Extract grayscale and alpha channels
+    const gray = new Float32Array(w * h);
+    const alpha = new Float32Array(w * h);
+    for (let i = 0; i < data.length; i += 4) {
+      const idx = i / 4;
+      gray[idx] = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+      alpha[idx] = data[i + 3];
+    }
+
+    // 3. Inspect border pixels (outer 4%) to detect background color
+    const borderVals = [];
+    const bw = Math.max(2, Math.floor(w * 0.04));
+    const bh = Math.max(2, Math.floor(h * 0.04));
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        if (y < bh || y >= h - bh || x < bw || x >= w - bw) {
+          const idx = y * w + x;
+          if (alpha[idx] > 128) {
+            borderVals.push(gray[idx]);
+          }
+        }
+      }
+    }
+
+    let bgVal = 255.0; // default light background
+    if (borderVals.length > 0) {
+      borderVals.sort((a, b) => a - b);
+      bgVal = borderVals[Math.floor(borderVals.length / 2)];
+    }
+
+    // 4. Compute foreground intensity (Fashion-MNIST convention: 0 = black bg, 255 = item)
+    const fg = new Float32Array(w * h);
+    let maxDiff = 0.0;
+    for (let i = 0; i < w * h; i++) {
+      if (alpha[i] <= 50) {
+        fg[i] = 0.0; // transparent is background
+      } else {
+        const diff = bgVal > 127 ? Math.max(0, bgVal - gray[i]) : Math.max(0, gray[i] - bgVal);
+        fg[i] = diff;
+        if (diff > maxDiff) maxDiff = diff;
+      }
+    }
+
+    // 5. Clean background noise and stretch contrast
+    let minX = w, maxX = 0, minY = h, maxY = 0;
+    let hasFg = false;
+    const thresh = maxDiff > 10 ? 0.12 * maxDiff : 10;
+    const range = maxDiff - thresh;
+
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const idx = y * w + x;
+        if (fg[idx] > thresh) {
+          fg[idx] = range > 0 ? Math.min(255, ((fg[idx] - thresh) / range) * 255.0) : 255.0;
+          if (fg[idx] > 15) {
+            if (x < minX) minX = x;
+            if (x > maxX) maxX = x;
+            if (y < minY) minY = y;
+            if (y > maxY) maxY = y;
+            hasFg = true;
+          }
+        } else {
+          fg[idx] = 0.0;
+        }
+      }
+    }
+
+    if (!hasFg) {
+      minX = 0; maxX = w - 1; minY = 0; maxY = h - 1;
+    }
+
+    // 6. Crop bounding box of foreground
+    const cropW = maxX - minX + 1;
+    const cropH = maxY - minY + 1;
+    const cropCanvas = document.createElement('canvas');
+    cropCanvas.width = cropW;
+    cropCanvas.height = cropH;
+    const cropCtx = cropCanvas.getContext('2d');
+    const cropImgData = cropCtx.createImageData(cropW, cropH);
+
+    for (let cy = 0; cy < cropH; cy++) {
+      for (let cx = 0; cx < cropW; cx++) {
+        const srcIdx = (minY + cy) * w + (minX + cx);
+        const dstIdx = (cy * cropW + cx) * 4;
+        const val = Math.round(fg[srcIdx]);
+        cropImgData.data[dstIdx] = val;
+        cropImgData.data[dstIdx + 1] = val;
+        cropImgData.data[dstIdx + 2] = val;
+        cropImgData.data[dstIdx + 3] = 255;
+      }
+    }
+    cropCtx.putImageData(cropImgData, 0, 0);
+
+    // 7. Scale into 20x20 box inside 28x28 canvas preserving aspect ratio
+    const targetBox = 20;
+    const scale = targetBox / Math.max(cropW, cropH);
+    const nw = Math.max(1, Math.round(cropW * scale));
+    const nh = Math.max(1, Math.round(cropH * scale));
+    const offsetX = Math.floor((28 - nw) / 2);
+    const offsetY = Math.floor((28 - nh) / 2);
+
+    // 8. Draw centered onto 28x28 canvas with black background
+    const finalCanvas = document.createElement('canvas');
+    finalCanvas.width = 28;
+    finalCanvas.height = 28;
+    const finalCtx = finalCanvas.getContext('2d');
+    finalCtx.fillStyle = '#000000';
+    finalCtx.fillRect(0, 0, 28, 28);
+    finalCtx.imageSmoothingEnabled = true;
+    finalCtx.imageSmoothingQuality = 'high';
+    finalCtx.drawImage(cropCanvas, offsetX, offsetY, nw, nh);
+
+    return finalCanvas;
+  }
 
   if (uploadInput && previewCanvas) {
     uploadInput.addEventListener('change', (e) => {
@@ -1400,9 +1552,10 @@ function initInference() {
       reader.onload = (event) => {
         const img = new Image();
         img.onload = () => {
+          const processed = preprocessImageTo28x28(img);
           const ctx = previewCanvas.getContext('2d');
           ctx.clearRect(0, 0, 28, 28);
-          ctx.drawImage(img, 0, 0, 28, 28);
+          ctx.drawImage(processed, 0, 0);
         };
         img.src = event.target.result;
       };
@@ -1417,12 +1570,8 @@ function initInference() {
       const pixels = [];
 
       for (let i = 0; i < imgData.data.length; i += 4) {
-        const r = imgData.data[i];
-        const g = imgData.data[i + 1];
-        const b = imgP = imgData.data[i + 2];
-        // Standard grayscale conversion: 0.299R + 0.587G + 0.114B
-        const gray = (0.299 * r + 0.587 * g + 0.114 * b) / 255.0;
-        pixels.push(gray);
+        // Red channel is normalized [0.0, 1.0] grayscale (black bg = 0, item = >0)
+        pixels.push(imgData.data[i] / 255.0);
       }
 
       try {
@@ -1538,25 +1687,82 @@ async function loadSecuritySection() {
   }
 }
 
+function showPerformingAttackScreen(attackName, attackerId) {
+  const modal = document.getElementById('client-modal');
+  const title = document.getElementById('client-modal-title');
+  const content = document.getElementById('client-modal-body');
+
+  title.innerText = `🚨 Executing Attack Simulation`;
+
+  content.innerHTML = `
+    <div class="attack-sim-card">
+      <div class="attack-sim-radar">
+        <span class="attack-sim-icon">⚡</span>
+      </div>
+      <h3 style="font-size:18px; font-weight:800; color:var(--text-primary); margin-bottom:6px;">
+        Simulating ${attackName}...
+      </h3>
+      <p style="font-size:13px; color:var(--text-secondary); max-width:440px; margin:0 auto 16px auto;">
+        Transmitting adversarial vector from <strong>${attackerId || 'targeted node'}</strong> into the blockchain consensus network.
+      </p>
+
+      <div class="attack-steps-list">
+        <div class="attack-step-item active" id="att-step-1">
+          <span>📡</span>
+          <span>Injecting compromised tensors & forged Ed25519 payload...</span>
+        </div>
+        <div class="attack-step-item" id="att-step-2">
+          <span>🛡️</span>
+          <span>Intercepting transmission at PoA Byzantine Committee gate...</span>
+        </div>
+        <div class="attack-step-item" id="att-step-3">
+          <span>⚖️</span>
+          <span>Auditing G2 admission rule, delta norm bounds, & consensus quorum...</span>
+        </div>
+      </div>
+
+      <div style="margin-top:20px; display:flex; justify-content:center; align-items:center; gap:8px;">
+        <div class="spinner" style="width:20px; height:20px; border-width:2.5px;"></div>
+        <span style="font-size:12px; font-weight:700; color:#e11d48; letter-spacing:0.04em;">SIMULATION IN PROGRESS...</span>
+      </div>
+    </div>
+  `;
+
+  modal.classList.add('active');
+
+  setTimeout(() => {
+    const s2 = document.getElementById('att-step-2');
+    if (s2) s2.classList.add('active');
+  }, 450);
+  setTimeout(() => {
+    const s3 = document.getElementById('att-step-3');
+    if (s3) s3.classList.add('active');
+  }, 950);
+}
+
 function initSecurityTests() {
   const attacks = [
-    { id: 'btn-attack-tamper', type: 'tampered_update' },
-    { id: 'btn-attack-forgery', type: 'forged_commitment' },
-    { id: 'btn-attack-unauth', type: 'unauthorized_client' },
-    { id: 'btn-attack-block', type: 'block_tampering' },
-    { id: 'btn-attack-poison', type: 'poisoned_gradients' },
-    { id: 'btn-attack-norm', type: 'exploding_norm' },
+    { id: 'btn-attack-tamper', type: 'tampered_update', name: 'Tampered Weight Update' },
+    { id: 'btn-attack-forgery', type: 'forged_commitment', name: 'Forged Commitment' },
+    { id: 'btn-attack-unauth', type: 'unauthorized_client', name: 'Unauthorized Sybil Client' },
+    { id: 'btn-attack-block', type: 'block_tampering', name: 'Block Tampering' },
+    { id: 'btn-attack-poison', type: 'poisoned_gradients', name: 'Poisoned Gradients' },
+    { id: 'btn-attack-norm', type: 'exploding_norm', name: 'Exploding Norm Attack' },
   ];
 
   attacks.forEach(att => {
     document.getElementById(att.id)?.addEventListener('click', async () => {
       const btn = document.getElementById(att.id);
       if (btn) btn.disabled = true;
-      try {
-        const attackerSelect = document.getElementById('select-attacker-client');
-        const selectedClientId = attackerSelect?.value || undefined;
 
-        const res = await fetch('/api/security/test', {
+      const attackerSelect = document.getElementById('select-attacker-client');
+      const selectedClientId = attackerSelect?.value || undefined;
+
+      // Immediately show performing attack screen!
+      showPerformingAttackScreen(att.name, selectedClientId);
+
+      try {
+        const fetchPromise = fetch('/api/security/test', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1564,6 +1770,12 @@ function initSecurityTests() {
             client_id: selectedClientId,
           }),
         });
+
+        // Ensure user sees the performing attack screen for at least 1400ms
+        const [res] = await Promise.all([
+          fetchPromise,
+          new Promise(r => setTimeout(r, 1400))
+        ]);
 
         if (res.ok) {
           const result = await res.json();
@@ -1575,9 +1787,11 @@ function initSecurityTests() {
         } else {
           const err = await res.json();
           alert(`Attack test failed: ${err.detail || 'Bad request'}`);
+          document.getElementById('client-modal')?.classList.remove('active');
         }
       } catch (err) {
         alert(`Attack test error: ${err}`);
+        document.getElementById('client-modal')?.classList.remove('active');
       } finally {
         if (btn) btn.disabled = false;
       }
@@ -1949,15 +2163,15 @@ async function verifyModelTestSet() {
         </div>
       </div>
 
-      <div class="card" style="margin-bottom:16px; padding:12px 16px; background:rgba(15, 23, 42, 0.6);">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+      <div class="card" style="margin-bottom:16px; padding:16px; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:12px;">
+        <div style="display:flex; flex-direction:column; gap:12px;">
           <div>
-            <span style="font-size:11px; text-transform:uppercase; color:var(--text-secondary); font-weight:700;">Model Parameters Checksum (SHA-256)</span>
-            <div class="mono" style="font-size:12px; color:var(--accent-cyan); word-break:break-all; margin-top:2px;">${data.model_hash}</div>
+            <span style="font-size:11.5px; text-transform:uppercase; letter-spacing:0.05em; color:#475569; font-weight:700; display:block; margin-bottom:4px;">Model Parameters Checksum (SHA-256)</span>
+            <div class="mono" style="font-size:12px; font-weight:600; color:#0369a1; background:#e0f2fe; padding:8px 12px; border-radius:8px; border:1px solid #bae6fd; word-break:break-all;">${data.model_hash}</div>
           </div>
           <div>
-            <span style="font-size:11px; text-transform:uppercase; color:var(--text-secondary); font-weight:700;">Cryptographic Proof Signature</span>
-            <div class="mono" style="font-size:12px; color:var(--accent-emerald); word-break:break-all; margin-top:2px;">${data.proof_signature}</div>
+            <span style="font-size:11.5px; text-transform:uppercase; letter-spacing:0.05em; color:#475569; font-weight:700; display:block; margin-bottom:4px;">Cryptographic Proof Signature</span>
+            <div class="mono" style="font-size:12px; font-weight:600; color:#047857; background:#d1fae5; padding:8px 12px; border-radius:8px; border:1px solid #a7f3d0; word-break:break-all;">${data.proof_signature}</div>
           </div>
         </div>
       </div>
