@@ -13,8 +13,8 @@ class MiniChart {
     this.options = {
       type: options.type || 'line', // 'line' | 'bar' | 'area'
       title: options.title || '',
-      color: options.color || '#38bdf8',
-      fillColor: options.fillColor || 'rgba(56, 189, 248, 0.15)',
+      color: options.color || '#a777ff',
+      fillColor: options.fillColor || 'rgba(177, 133, 255, 0.16)',
       secondaryColor: options.secondaryColor || '#f43f5e',
       labels: [],
       data: [],
@@ -242,8 +242,8 @@ class MiniChart {
     ctx.clearRect(0, 0, width, height);
 
     if (!data || data.length === 0) {
-      ctx.fillStyle = '#64748b';
-      ctx.font = '12.5px sans-serif';
+      ctx.fillStyle = '#8e8e99';
+      ctx.font = '600 13px "Montserrat", sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText('Awaiting experiment data...', width / 2, height / 2);
@@ -265,10 +265,10 @@ class MiniChart {
     const valRange = maxVal - minVal || 1;
 
     // Draw Subtle Grid & Y-Ticks
-    ctx.strokeStyle = '#1e293b';
+    ctx.strokeStyle = '#e6e6ed';
     ctx.lineWidth = 1;
-    ctx.fillStyle = '#94a3b8';
-    ctx.font = '10.5px monospace';
+    ctx.fillStyle = '#6e6e7d';
+    ctx.font = '600 10.5px "Montserrat", monospace';
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
 
@@ -298,6 +298,7 @@ class MiniChart {
     // Draw X-Ticks with Decimation to Prevent Overlapping / Overflow
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
+    ctx.font = '600 10.5px "Montserrat", sans-serif';
     const xStep = plotW / Math.max(1, labels.length - (this.options.type === 'bar' ? 0 : 1));
 
     const maxXTicks = Math.max(2, Math.floor(plotW / 55));
@@ -308,7 +309,7 @@ class MiniChart {
         const x = this.options.type === 'bar'
           ? p.left + (i + 0.5) * (plotW / labels.length)
           : p.left + i * xStep;
-        ctx.fillStyle = i === this.hoverIndex ? '#f8fafc' : '#64748b';
+        ctx.fillStyle = i === this.hoverIndex ? '#181820' : '#8e8e99';
         ctx.fillText(lbl, x, p.top + plotH + 8);
       }
     });
@@ -362,17 +363,17 @@ class MiniChart {
 
         ctx.beginPath();
         ctx.arc(x, y, isHovered ? 6 : 3.5, 0, Math.PI * 2);
-        ctx.fillStyle = isHovered ? '#ffffff' : '#0a0e17';
+        ctx.fillStyle = '#ffffff';
         ctx.fill();
         ctx.strokeStyle = this.options.color;
-        ctx.lineWidth = isHovered ? 3 : 2;
+        ctx.lineWidth = isHovered ? 3.5 : 2;
         ctx.stroke();
 
         if (isHovered) {
           ctx.beginPath();
           ctx.arc(x, y, 9, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-          ctx.lineWidth = 1.5;
+          ctx.strokeStyle = 'rgba(177, 133, 255, 0.4)';
+          ctx.lineWidth = 2;
           ctx.stroke();
         }
       });
@@ -402,11 +403,14 @@ class MiniChart {
         const barH = Math.max(2, p.top + plotH - y);
         const isHovered = i === this.hoverIndex;
 
-        ctx.fillStyle = isHovered ? '#38bdf8' : this.options.color;
-        ctx.fillRect(x, y, barW, barH);
-        ctx.strokeStyle = isHovered ? '#ffffff' : 'rgba(255,255,255,0.15)';
-        ctx.lineWidth = 1;
-        ctx.strokeRect(x, y, barW, barH);
+        ctx.fillStyle = isHovered ? '#8142f5' : this.options.color;
+        if (ctx.roundRect) {
+          ctx.beginPath();
+          ctx.roundRect(x, y, barW, barH, [Math.min(6, barW / 2), Math.min(6, barW / 2), 0, 0]);
+          ctx.fill();
+        } else {
+          ctx.fillRect(x, y, barW, barH);
+        }
       });
     }
 
@@ -470,24 +474,24 @@ class MiniChart {
     if (tipY < p.top) tipY = p.top;
     if (tipY + tipH > p.top + plotH) tipY = p.top + plotH - tipH;
 
-    ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
-    ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+    ctx.fillStyle = '#181820';
+    ctx.strokeStyle = '#181820';
     ctx.lineWidth = 1;
 
     // Rounded rectangle tooltip
     ctx.beginPath();
-    ctx.roundRect ? ctx.roundRect(tipX, tipY, tipW, tipH, 6) : ctx.rect(tipX, tipY, tipW, tipH);
+    ctx.roundRect ? ctx.roundRect(tipX, tipY, tipW, tipH, 8) : ctx.rect(tipX, tipY, tipW, tipH);
     ctx.fill();
     ctx.stroke();
 
-    ctx.fillStyle = '#f8fafc';
-    ctx.font = 'bold 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 11px "Montserrat", sans-serif';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
     ctx.fillText(tipTitle, tipX + 10, tipY + 6);
 
-    ctx.fillStyle = this.options.color;
-    ctx.font = '11px monospace';
+    ctx.fillStyle = '#cbb0ff';
+    ctx.font = '600 11px monospace';
     ctx.fillText(tipVal, tipX + 10, tipY + 22);
   }
 
@@ -547,23 +551,23 @@ function expandChart(chartKey) {
       <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:14px;">
         <div class="card kpi-card" style="padding:10px 14px; min-width:110px;">
           <span class="kpi-label">Peak Value</span>
-          <span class="kpi-val" style="font-size:16px; color:#34d399;">${fmt(maxVal)}</span>
+          <span class="kpi-val" style="font-size:16px; color:var(--accent-emerald); font-weight:800;">${fmt(maxVal)}</span>
         </div>
         <div class="card kpi-card" style="padding:10px 14px; min-width:110px;">
           <span class="kpi-label">Minimum</span>
-          <span class="kpi-val" style="font-size:16px; color:#fb7185;">${fmt(minVal)}</span>
+          <span class="kpi-val" style="font-size:16px; color:var(--accent-rose); font-weight:800;">${fmt(minVal)}</span>
         </div>
         <div class="card kpi-card" style="padding:10px 14px; min-width:110px;">
           <span class="kpi-label">Average</span>
-          <span class="kpi-val" style="font-size:16px; color:#38bdf8;">${fmt(avg)}</span>
+          <span class="kpi-val" style="font-size:16px; color:var(--accent-cyan); font-weight:800;">${fmt(avg)}</span>
         </div>
         <div class="card kpi-card" style="padding:10px 14px; min-width:110px;">
           <span class="kpi-label">Latest</span>
-          <span class="kpi-val" style="font-size:16px; color:#f8fafc;">${fmt(latest)}</span>
+          <span class="kpi-val" style="font-size:16px; color:var(--text-primary); font-weight:800;">${fmt(latest)}</span>
         </div>
         <div class="card kpi-card" style="padding:10px 14px; min-width:110px;">
           <span class="kpi-label">Net Change</span>
-          <span class="kpi-val" style="font-size:16px; color:${diff >= 0 ? '#34d399' : '#fb7185'};">
+          <span class="kpi-val" style="font-size:16px; color:${diff >= 0 ? 'var(--accent-emerald)' : 'var(--accent-rose)'}; font-weight:800;">
             ${diff >= 0 ? '+' : ''}${fmt(diff)}
           </span>
         </div>

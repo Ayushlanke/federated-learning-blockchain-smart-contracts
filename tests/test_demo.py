@@ -28,6 +28,7 @@ from bcflsrv.demo.blockchain import (
 from bcflsrv.demo.client import (
     ClientUpdate,
     FLClient,
+    MaliciousClient,
     commit_update,
     verify_update_commitment,
 )
@@ -332,3 +333,36 @@ def test_mini_demo_pipeline_run(tmp_path: Path):
     assert (fig_dir / "loss_vs_round.png").exists()
     assert (fig_dir / "participation.png").exists()
     assert (fig_dir / "blockchain_timeline.png").exists()
+
+
+def test_malicious_client_attacks_and_signing():
+    seed_bytes = b"\x09" * 32
+    x = np.random.randn(10, 1, 28, 28).astype(np.float32)
+    y = np.random.randint(0, 10, size=(10,)).astype(np.int64)
+    dataset = FashionMNIST(x_train=x, y_train=y, x_test=x, y_test=y)
+    shard = ClientShard(client_id="rogue_test", indices=np.arange(10))
+
+    mc = MaliciousClient(
+        seed_bytes=seed_bytes,
+        shard=shard,
+        train_config=TrainConfig(epochs=1, max_batches=2, lr=0.01),
+        malice_rate=1.0,  # Guarantee attack
+    )
+
+    model = SmallCNN()
+    global_params = get_flat_params(model)
+    mc.receive_global_model(global_params)
+
+    # Test that train_and_submit does not throw AttributeError: 'MaliciousClient' object has no attribute 'sign'
+    for r in range(1, 10):
+        up = mc.train_and_submit(fl_round=r, dataset=dataset)
+        assert up.client_id == mc.client_id
+        assert getattr(up, "tampered", False)
+        assert getattr(up, "is_malicious", False)
+        assert getattr(up, "attack_type", None) in [
+            "broken_weights",
+            "poisoned_gradients",
+            "tampered_bytes",
+            "forged_signature",
+        ]
+

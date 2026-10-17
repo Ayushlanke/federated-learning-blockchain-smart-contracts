@@ -135,6 +135,10 @@ class FLClient:
     def n_samples(self) -> int:
         return len(self.shard)
 
+    def sign(self, message: bytes, context: SigContext = SigContext.SUBMISSION) -> bytes:
+        """Sign a message using this client's Ed25519 identity."""
+        return self._identity.sign(context, message)
+
     # ------------------------------------------------------------------
     # FL round participation
     # ------------------------------------------------------------------
@@ -220,3 +224,63 @@ class FLClient:
         )
         self._round_updates.append(cu)
         return cu
+
+class MaliciousClient(FLClient):
+    """An infected FL client that executes adversarial attacks against the network.
+
+    It intermittently injects broken weights, poisoned gradients, tampered
+    payloads, or invalid signatures to rigorously test the multi-stage admission pipeline.
+    """
+    def __init__(self, seed_bytes: bytes, shard: ClientShard,
+                 train_config: Optional[TrainConfig] = None,
+                 n_classes: int = 10,
+                 malice_rate: float = 0.5):
+        super().__init__(seed_bytes, shard, train_config, n_classes)
+        self.malice_rate = malice_rate
+        self.is_infected = True
+        self.is_malicious = True
+        self.last_attack_type: Optional[str] = None
+        self.attacks_executed: int = 0
+
+    def train_and_submit(self, fl_round: int, dataset: FashionMNIST, seed_offset: int = 0) -> ClientUpdate:
+        import random
+        cu = super().train_and_submit(fl_round, dataset, seed_offset)
+
+        if random.random() < self.malice_rate:
+            attack_type = random.choice([
+                "broken_weights",
+                "poisoned_gradients",
+                "tampered_bytes",
+                "forged_signature",
+            ])
+            self.attacks_executed += 1
+            self.last_attack_type = attack_type
+
+            if attack_type == "broken_weights":
+                # Inject high-amplitude noise and norm explosion
+                noise = np.random.normal(0, 1.5, cu.update.shape).astype(np.float32)
+                cu.update = (cu.update * 12.0) + noise
+                cu.commitment = commit_update(self.client_id, fl_round, cu.update)
+                cu.signature = self.sign(cu.commitment) # Valid sig, fails norm/G2
+            elif attack_type == "poisoned_gradients":
+                # Invert gradient trajectory to sabotage global consensus
+                cu.update = -cu.update * 2.5
+                cu.commitment = commit_update(self.client_id, fl_round, cu.update)
+                cu.signature = self.sign(cu.commitment) # Valid sig, fails directional G2
+            elif attack_type == "tampered_bytes":
+                # In-flight MITM byte flipping after signing
+                cu.update[:100] *= -5.0
+                # Keep original commitment & signature -> fails commitment check
+            elif attack_type == "forged_signature":
+                # Forged cryptographic signature
+                cu.signature = b"\x00" * 64
+
+            cu.tampered = True
+            cu.weight_norm = float(np.linalg.norm(cu.update))
+            setattr(cu, "attack_type", attack_type)
+            setattr(cu, "is_malicious", True)
+            return cu
+
+        return cu
+
+

@@ -104,3 +104,44 @@ def test_research_api(client):
     assert "experiments" in data
     assert len(data["experiments"]) >= 5
     assert "distinction" in data
+
+
+def test_model_verification_api(client):
+    res = client.post("/api/model/verify")
+    assert res.status_code == 200
+    data = res.json()
+    assert data["verified"] is True
+    assert "accuracy" in data
+    assert "loss" in data
+    assert "model_hash" in data
+    assert "class_accuracies" in data
+    assert len(data["class_accuracies"]) == 10
+    assert "proof_signature" in data
+
+
+def test_system_audit_api(client):
+    res = client.get("/api/system/audit")
+    assert res.status_code == 200
+    data = res.json()
+    assert data["all_passed"] is True
+    assert "checks" in data
+    assert len(data["checks"]) == 5
+    assert "audit_timestamp" in data
+
+
+def test_latencies_breakdown_api(client):
+    res = client.get("/api/system/latencies")
+    assert res.status_code == 200
+    data = res.json()
+    assert "blockchain_type" in data
+    assert "consensus_protocol" in data
+    assert "transactions_throughput_tps" in data
+    assert "stage_latencies" in data
+    assert "admission_ms" in data["stage_latencies"]
+    assert "client_admission_audit" in data
+
+    # Backward compatibility alias
+    res_alias = client.get("/api/gas/breakdown")
+    assert res_alias.status_code == 200
+
+

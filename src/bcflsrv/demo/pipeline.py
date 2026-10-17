@@ -90,6 +90,7 @@ class RoundRecord:
     accepted_clients: List[str] = field(default_factory=list)
     rejected_clients: List[str] = field(default_factory=list)
     wall_clock_s: float = 0.0
+    stage_latencies: Dict[str, float] = field(default_factory=dict)
 
 
 @dataclass

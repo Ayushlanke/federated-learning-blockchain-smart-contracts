@@ -42,6 +42,8 @@ class VerificationStatus(Enum):
     REJECTED_UNKNOWN = "rejected_unknown"  # client not in registry
     REJECTED_NORM  = "rejected_norm"     # update norm suspiciously large
     REJECTED_ROUND = "rejected_round"    # wrong round number
+    REJECTED_TRUST = "rejected_trust"    # persistent trust score below safety threshold
+    REJECTED_REP   = "rejected_rep"      # rejected by multi-round reputation (G2/G3)
 
 
 @dataclass
@@ -76,14 +78,29 @@ class UpdateVerifier:
         registry: Dict[str, bytes],
         max_update_norm: Optional[float] = None,
         expected_round: Optional[int] = None,
+        trust_scores: Optional[Dict[str, float]] = None,
+        trust_threshold: float = 0.40,
     ) -> None:
         self.registry = dict(registry)
         self.max_update_norm = max_update_norm
         self.expected_round = expected_round
+        self.trust_scores = dict(trust_scores) if trust_scores else {}
+        self.trust_threshold = trust_threshold
 
     def verify(self, update: ClientUpdate) -> VerificationResult:
         """Run all verification checks on one client update."""
         cid = update.client_id
+
+        # 0. Persistent Trust Score Firewall
+        if self.trust_scores and cid in self.trust_scores:
+            score = self.trust_scores[cid]
+            if score < self.trust_threshold:
+                return VerificationResult(
+                    client_id=cid,
+                    status=VerificationStatus.REJECTED_TRUST,
+                    detail=f"Quarantined: Client trust score {score:.1%} below {self.trust_threshold:.1%} security gate",
+                    commitment_hex=update.commitment.hex() if hasattr(update, "commitment") and update.commitment else "",
+                )
 
         # 1. Known client?
         if cid not in self.registry:
@@ -209,3 +226,38 @@ class TamperingDemo:
             local_loss=update.local_loss,
             tampered=True,
         )
+
+    @staticmethod
+    def poison_direction(update: ClientUpdate, scale: float = -3.0) -> ClientUpdate:
+        """Invert and amplify gradient direction to push model away from global convergence."""
+        tampered_params = update.update.copy() * scale
+        fake_commitment = commit_update(update.client_id, update.fl_round, tampered_params)
+        return ClientUpdate(
+            client_id=update.client_id,
+            public_key=update.public_key,
+            fl_round=update.fl_round,
+            update=tampered_params,
+            commitment=fake_commitment,
+            signature=update.signature,  # Signature mismatch or directional failure
+            n_samples=update.n_samples,
+            local_loss=update.local_loss,
+            tampered=True,
+        )
+
+    @staticmethod
+    def exploding_norm(update: ClientUpdate, multiplier: float = 40.0) -> ClientUpdate:
+        """Inject massive parameter updates to destabilize FedAvg aggregation."""
+        tampered_params = update.update.copy() * multiplier
+        fake_commitment = commit_update(update.client_id, update.fl_round, tampered_params)
+        return ClientUpdate(
+            client_id=update.client_id,
+            public_key=update.public_key,
+            fl_round=update.fl_round,
+            update=tampered_params,
+            commitment=fake_commitment,
+            signature=update.signature,
+            n_samples=update.n_samples,
+            local_loss=update.local_loss,
+            tampered=True,
+        )
+

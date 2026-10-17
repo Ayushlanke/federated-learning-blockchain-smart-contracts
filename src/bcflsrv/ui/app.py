@@ -74,8 +74,16 @@ class InferenceRequest(BaseModel):
     sample_index: int = Field(ge=0, le=9999)
 
 
+class CustomInferenceRequest(BaseModel):
+    pixels: List[float] = Field(..., min_length=784, max_length=784)
+
+
 class SecurityTestRequest(BaseModel):
-    attack_type: str = Field(..., pattern="^(tampered_update|forged_commitment|unauthorized_client|block_tampering)$")
+    attack_type: str = Field(
+        ...,
+        pattern="^(tampered_update|forged_commitment|unauthorized_client|block_tampering|poisoned_gradients|exploding_norm)$",
+    )
+    client_id: Optional[str] = None
 
 
 # ------------------------------------------------------------------
@@ -130,6 +138,26 @@ def get_model() -> Dict[str, Any]:
     return runner_instance.get_model_info()
 
 
+@app.post("/api/model/verify")
+def verify_model() -> Dict[str, Any]:
+    """Execute live mathematical verification of current model weights on test set."""
+    return runner_instance.verify_model_live()
+
+
+@app.get("/api/system/audit")
+def get_system_audit() -> Dict[str, Any]:
+    """Execute end-to-end 5-pillar academic cryptographic & empirical audit."""
+    return runner_instance.get_system_audit()
+
+
+@app.get("/api/system/latencies")
+@app.get("/api/gas/breakdown")
+def get_system_latencies() -> Dict[str, Any]:
+    """Retrieve detailed private blockchain stage latency profile and admission screening audit."""
+    return runner_instance.get_gas_and_latency_breakdown()
+
+
+
 @app.get("/api/model/samples")
 def get_samples(count: int = Query(default=12, ge=1, le=50)) -> List[Dict[str, Any]]:
     """Retrieve test Fashion-MNIST samples for live inference demo."""
@@ -145,6 +173,15 @@ def run_inference(req: InferenceRequest) -> Dict[str, Any]:
         raise HTTPException(status_code=400, detail=str(e))
 
 
+@app.post("/api/model/inference/custom")
+def run_custom_inference(req: CustomInferenceRequest) -> Dict[str, Any]:
+    """Run inference on custom uploaded pixels."""
+    try:
+        return runner_instance.run_inference_custom(req.pixels)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
 @app.get("/api/model/confusion_matrix")
 def get_confusion_matrix() -> Dict[str, Any]:
     """Compute 10x10 confusion matrix on the test set."""
@@ -155,9 +192,21 @@ def get_confusion_matrix() -> Dict[str, Any]:
 def run_security_test(req: SecurityTestRequest) -> Dict[str, Any]:
     """Execute a real cryptographic attack and verify the defense layer."""
     try:
-        return runner_instance.run_security_attack(req.attack_type)
+        return runner_instance.run_security_attack(req.attack_type, client_id=req.client_id)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.get("/api/security/incidents")
+def get_security_incidents() -> List[Dict[str, Any]]:
+    """Retrieve all intercepted threat incidents and caught attackers."""
+    return runner_instance.get_threat_incidents()
+
+
+@app.post("/api/clients/reset-score")
+def reset_client_score(client_id: Optional[str] = Query(default=None)) -> Dict[str, Any]:
+    """Reset persistent client trust score(s) to 100% for baseline testing."""
+    return runner_instance.reset_client_score(client_id)
 
 
 # ------------------------------------------------------------------
@@ -211,9 +260,19 @@ def reset_experiment() -> Dict[str, Any]:
     return {"status": "idle"}
 
 
+@app.post("/api/experiment/inject-malice")
+def inject_malicious_client() -> Dict[str, Any]:
+    """Inject a rogue client into the current experiment."""
+    try:
+        client_id = runner_instance.inject_malicious_client()
+        return {"status": "success", "client_id": client_id}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
 @app.get("/api/experiment/logs")
 def get_logs() -> List[Dict[str, Any]]:
-    """Fetch live timestamped application logs."""
+    """Fetch live timestamped application logs with expandable details."""
     return [
         {
             "timestamp": log.timestamp,
@@ -221,6 +280,8 @@ def get_logs() -> List[Dict[str, Any]]:
             "level": log.level,
             "message": log.message,
             "category": log.category,
+            "client_id": log.client_id,
+            "details": log.details,
         }
         for log in runner_instance.logs
     ]

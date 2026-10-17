@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BC-FL-SRV Research & Testing Platform</title>
-  <link rel="stylesheet" href="/static/style.css?v=2.0.2">
+  <!-- Google Fonts: Montserrat (from flat coworking design template) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css?v=3.0.0">
 </head>
 <body>
 
@@ -43,26 +47,18 @@
         <span class="nav-icon">🛡️</span>
         <span>Security & Attacks</span>
       </li>
-      <li class="nav-item" data-tab="experiments">
-        <span class="nav-icon">🧪</span>
-        <span>Experiments Benchmark</span>
-      </li>
       <li class="nav-item" data-tab="logs">
         <span class="nav-icon">📜</span>
         <span>Live Event Logs</span>
       </li>
-      <li class="nav-item" data-tab="research">
-        <span class="nav-icon">📚</span>
-        <span>BC-FL-SRV Research</span>
-      </li>
     </ul>
 
     <div class="sidebar-footer">
-      <div>
+      <div class="sidebar-status-pill">
         <span class="status-dot" id="global-status-dot"></span>
-        <span id="global-status-text" style="font-weight:600;">IDLE</span>
+        <span id="global-status-text">IDLE</span>
       </div>
-      <span>v2.0.0</span>
+      <span style="font-weight:700; font-size:11px; color:var(--text-muted);">v2.0.0</span>
     </div>
   </aside>
 
@@ -72,6 +68,13 @@
       <div class="top-title">
         <h2 id="top-page-title">Dashboard</h2>
       </div>
+
+      <!-- Minimalist Search Input (Screen 2 Template) -->
+      <div class="top-search-bar">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="top-search-input" placeholder="Search parameters, blocks, clients..." oninput="handleGlobalSearch(this.value)">
+      </div>
+
       <div class="top-actions">
         <span class="badge badge-info" id="header-status-badge">READY</span>
         <button class="btn btn-secondary btn-sm" onclick="refreshAll()">⟳ Refresh</button>
@@ -84,45 +87,230 @@
            TAB 1: DASHBOARD
            ══════════════════════════════════════════════════════════════════════ -->
       <section id="page-dashboard" class="page active">
-        <!-- KPI Cards -->
-        <div class="kpi-grid">
-          <div class="card kpi-card">
-            <span class="kpi-label">Current FL Round</span>
-            <span class="kpi-val" id="kpi-round">0 / 0</span>
-            <span class="kpi-sub">Synchronous rounds</span>
+
+        <!-- 4-Box Category Grid (Signature Screen 2 from Template) -->
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:14px;">
+          <div>
+            <h2 style="font-size:20px; font-weight:800; color:var(--text-primary); margin-bottom:2px;">Find The Best Workspace For Your Research</h2>
+            <p style="font-size:12.5px; color:var(--text-secondary);">Decentralized Byzantine-resilient Federated Learning evaluation & cryptographic proof suite</p>
           </div>
-          <div class="card kpi-card">
-            <span class="kpi-label">Active FL Clients</span>
-            <span class="kpi-val" id="kpi-clients">0 / 0</span>
-            <span class="kpi-sub">Non-IID Shards (α=0.5)</span>
+        </div>
+        <div class="category-grid">
+          <div class="category-card" onclick="document.querySelector('[data-tab=clients]').click()" title="Inspect FL Clients & Non-IID Partitions">
+            <div class="category-card-icon-wrap">
+              <div class="category-accent-dot"></div>
+              <svg class="category-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </div>
+            <h4>FL Clients</h4>
+            <span id="cat-clients-count">10 Active Nodes</span>
           </div>
-          <div class="card kpi-card">
-            <span class="kpi-label">Global Model Accuracy</span>
-            <span class="kpi-val" id="kpi-accuracy" style="color:var(--accent-cyan);">0.0%</span>
-            <span class="kpi-sub">Fashion-MNIST test set</span>
+          <div class="category-card" onclick="document.querySelector('[data-tab=blockchain]').click()" title="Explore Replicated Blockchain Ledger">
+            <div class="category-card-icon-wrap">
+              <div class="category-accent-dot"></div>
+              <svg class="category-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+            </div>
+            <h4>Blockchain</h4>
+            <span id="cat-blocks-count">200 Blocks Sealed</span>
           </div>
-          <div class="card kpi-card">
-            <span class="kpi-label">Global Model Loss</span>
-            <span class="kpi-val" id="kpi-loss" style="color:var(--accent-amber);">0.0000</span>
-            <span class="kpi-sub">Cross-Entropy Loss</span>
+          <div class="category-card" onclick="document.querySelector('[data-tab=training]').click()" title="Launch & Control Federated Training">
+            <div class="category-card-icon-wrap">
+              <div class="category-accent-dot"></div>
+              <svg class="category-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </div>
+            <h4>FL Training</h4>
+            <span id="cat-training-status">50 Rounds FedAvg</span>
           </div>
-          <div class="card kpi-card">
-            <span class="kpi-label">Blockchain Blocks</span>
-            <span class="kpi-val" id="kpi-blocks" style="color:var(--accent-purple);">0</span>
-            <span class="kpi-sub">Quorum verified ledger</span>
-          </div>
-          <div class="card kpi-card">
-            <span class="kpi-label">Model Updates</span>
-            <span class="kpi-val" id="kpi-updates" style="color:var(--accent-emerald);">0 acc / 0 rej</span>
-            <span class="kpi-sub">Signature & commit verified</span>
+          <div class="category-card all-card" onclick="runAcademicAudit()" title="Run Comprehensive 5-Pillar Academic Audit">
+            <h4>All</h4>
+            <span>Full Academic Audit</span>
           </div>
         </div>
 
-        <!-- Charts Grid -->
+        <!-- Academic Audit & Verification Action Bar (Modeled after "Book Now" Card) -->
+        <div class="card academic-action-bar" style="margin-bottom: 22px;">
+          <div class="academic-bar-info">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+              <span class="badge badge-info">ACADEMIC BENCHMARK SPEC</span>
+              <span style="font-size:12px; color:var(--text-secondary); font-weight:600;">Empirical PyTorch Tensors • Cryptographic Proofs • Zero Mocks</span>
+            </div>
+            <h3 style="font-size:16px; margin:0; font-weight:800; color:var(--text-primary);">Verifiable Blockchain-Federated Learning Evaluation Suite</h3>
+          </div>
+          <div class="academic-bar-actions">
+            <button class="btn btn-secondary btn-sm" onclick="showLatencyModal()" title="Inspect pipeline stage durations and per-client admission screening audit">
+              ⏱️ Stage Latency & Admission
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="verifyModelTestSet()" title="Run real PyTorch evaluation on 10,000 Fashion-MNIST test samples">
+              🔬 Verify Model on Test Set (10k)
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="verifyBlockchainChain()" title="Traverse SHA-256 block hash links from Genesis to Tip">
+              🛡️ Verify Hash-Chain
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="runAcademicAudit()" title="Run end-to-end 5-pillar academic cryptographic & empirical audit">
+              📜 Comprehensive Academic Audit
+            </button>
+          </div>
+        </div>
+
+        <!-- 12 Real Academic Research KPI Cards -->
+        <div class="kpi-grid">
+          <!-- 1. Global Accuracy -->
+          <div class="card kpi-card">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <span class="kpi-label">Global Model Accuracy</span>
+              <button class="verify-pill-btn" onclick="verifyModelTestSet()" title="Verify live on 10,000 test set">🔬 Verify</button>
+            </div>
+            <span class="kpi-val" id="kpi-accuracy" style="color:var(--accent-cyan);">0.0%</span>
+            <span class="kpi-sub">Top-1 Acc (10k Fashion-MNIST)</span>
+          </div>
+
+          <!-- 2. Test Loss -->
+          <div class="card kpi-card">
+            <span class="kpi-label">Generalization Test Loss</span>
+            <span class="kpi-val" id="kpi-loss" style="color:var(--accent-amber);">0.0000</span>
+            <span class="kpi-sub" id="kpi-loss-sub">Cross-Entropy Loss (L_test)</span>
+          </div>
+
+          <!-- 3. Peak Accuracy -->
+          <div class="card kpi-card">
+            <span class="kpi-label">Peak Empirical Accuracy</span>
+            <span class="kpi-val" id="kpi-peak-acc" style="color:var(--accent-emerald);">0.0%</span>
+            <span class="kpi-sub" id="kpi-peak-round">Peak @ Round 0</span>
+          </div>
+
+          <!-- 4. Accuracy Gain Delta Acc -->
+          <div class="card kpi-card">
+            <span class="kpi-label">Cumulative Acc Gain (ΔAcc)</span>
+            <span class="kpi-val" id="kpi-acc-gain" style="color:var(--accent-purple);">+0.0%</span>
+            <span class="kpi-sub" id="kpi-acc-gain-sub">Net convergence gain</span>
+          </div>
+
+          <!-- 5. Active Clients -->
+          <div class="card kpi-card">
+            <span class="kpi-label">Active FL Clients (K)</span>
+            <span class="kpi-val" id="kpi-clients">0 / 0</span>
+            <span class="kpi-sub">Non-IID Dirichlet (α=0.5)</span>
+          </div>
+
+          <!-- 6. Mean Gradient Norm -->
+          <div class="card kpi-card">
+            <span class="kpi-label">Mean Gradient Norm E[||Δw||]</span>
+            <span class="kpi-val" id="kpi-grad-norm" style="color:#38bdf8;">0.0000</span>
+            <span class="kpi-sub" id="kpi-grad-norm-sub">Min: 0.00 | Max: 0.00 | σ: 0.00</span>
+          </div>
+
+          <!-- 7. Consensus Directional Alignment -->
+          <div class="card kpi-card">
+            <span class="kpi-label">Consensus Cosine Alignment</span>
+            <span class="kpi-val" id="kpi-cosine-sim" style="color:var(--accent-emerald);">1.0000</span>
+            <span class="kpi-sub">Directional cos(θ) > 0.0 (Admitted)</span>
+          </div>
+
+          <!-- 8. Blockchain Ledger Height -->
+          <div class="card kpi-card">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <span class="kpi-label">Blockchain Blocks</span>
+              <button class="verify-pill-btn" onclick="verifyBlockchainChain()" title="Verify SHA-256 hash chain">🛡️ Chain</button>
+            </div>
+            <span class="kpi-val" id="kpi-blocks" style="color:var(--accent-purple);">0</span>
+            <span class="kpi-sub" id="kpi-blocks-sub">Tip: 00000000...</span>
+          </div>
+
+          <!-- 9. Quorum Consensus Protocol -->
+          <div class="card kpi-card">
+            <span class="kpi-label">Byzantine Quorum Rule</span>
+            <span class="kpi-val" id="kpi-quorum" style="font-size:18px; line-height:28px; color:var(--text-primary);">2/3 Quorum</span>
+            <span class="kpi-sub">3 PoA Validator Nodes</span>
+          </div>
+
+          <!-- 10. Cumulative On-Chain Storage -->
+          <div class="card kpi-card">
+            <span class="kpi-label">Cumulative Ledger Footprint</span>
+            <span class="kpi-val" id="kpi-ledger-kb" style="font-size:20px;">0.00 KB</span>
+            <span class="kpi-sub" id="kpi-ledger-tps">Throughput: 0.00 TPS</span>
+          </div>
+
+          <!-- 11. Byzantine Attacks Blocked -->
+          <div class="card kpi-card">
+            <span class="kpi-label">Byzantine Threats Blocked</span>
+            <span class="kpi-val" id="kpi-threats" style="color:var(--accent-rose);">0 Blocked</span>
+            <span class="kpi-sub" id="kpi-threats-sub">100% Interception Rate</span>
+          </div>
+
+          <!-- 12. Federation Trust Index -->
+          <div class="card kpi-card">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <span class="kpi-label">Federation Trust Index (τ)</span>
+              <button class="verify-pill-btn" onclick="document.querySelector('[data-tab=clients]').click()" title="Inspect permanent trust ledger">Inspect</button>
+            </div>
+            <span class="kpi-val" id="kpi-trust-avg" style="color:var(--accent-emerald);">100.0%</span>
+            <span class="kpi-sub">Admission Gate: 40.0% cutoff</span>
+          </div>
+
+          <!-- 13. Admission Screening Latency -->
+          <div class="card kpi-card">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <span class="kpi-label">Admission & Screening Time</span>
+              <button class="verify-pill-btn" onclick="showLatencyModal()" title="Inspect pipeline stage latency waterfall">⏱️ Profile</button>
+            </div>
+            <span class="kpi-val" id="kpi-admission-time" style="color:#06b6d4;">51.2 ms</span>
+            <span class="kpi-sub" id="kpi-admission-sub">~10.2 ms / client screening</span>
+          </div>
+        </div>
+
+        <!-- Academic Experimental Setup & Research Parameters Matrix -->
+        <div class="card" style="margin-bottom: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+            <div>
+              <h3 style="margin-bottom:2px; font-size:15px;">Academic Experimental Benchmark Parameters</h3>
+              <p style="font-size:12.5px; color:var(--text-secondary);">
+                Ground-truth research specification matching publication protocol. All parameters are active and cryptographically verifiable.
+              </p>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span class="badge badge-success" id="matrix-model-hash-badge" title="Active Model Weights SHA-256">SHA-256 Verified ✓</span>
+              <span class="badge badge-info">PyTorch SmallCNN (52,138 params)</span>
+            </div>
+          </div>
+          <div class="academic-matrix-grid">
+            <div class="matrix-item">
+              <span class="matrix-label">Neural Architecture</span>
+              <span class="matrix-val">SmallCNN (2x Conv2d + MaxPool + 2x Linear)</span>
+              <span class="matrix-note">52,138 float32 parameters (208.55 KB)</span>
+            </div>
+            <div class="matrix-item">
+              <span class="matrix-label">Dataset & Heterogeneity</span>
+              <span class="matrix-val">Fashion-MNIST (10 Classes)</span>
+              <span class="matrix-note">60,000 train (Dirichlet α=0.5) / 10,000 test</span>
+            </div>
+            <div class="matrix-item">
+              <span class="matrix-label">Optimizer & Local Training</span>
+              <span class="matrix-val">SGD (η = 0.03, Momentum = 0.9)</span>
+              <span class="matrix-note">E = 2 local epochs, Batch Size = 32</span>
+            </div>
+            <div class="matrix-item">
+              <span class="matrix-label">Consensus & BFT Threshold</span>
+              <span class="matrix-val" id="matrix-consensus-val">2/3 Byzantine Quorum</span>
+              <span class="matrix-note">3 PoA Validator Nodes • Zero Forking</span>
+            </div>
+            <div class="matrix-item">
+              <span class="matrix-label">Cryptographic Identity</span>
+              <span class="matrix-val">Ed25519 Asymmetric Keypairs</span>
+              <span class="matrix-note">256-bit signature per weight commitment</span>
+            </div>
+            <div class="matrix-item">
+              <span class="matrix-label">Active Parameter State Hash</span>
+              <span class="matrix-val mono" id="matrix-param-hash" style="font-size:12px;" title="Full SHA-256 parameter hash">—</span>
+              <span class="matrix-note">SHA-256 digest of flat parameter vector</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expanded 6-Chart Research Grid -->
         <div class="charts-grid">
+          <!-- Chart 1: Accuracy -->
           <div class="card chart-card">
             <div class="chart-header">
-              <h3>Accuracy vs FL Round</h3>
+              <h3>Global Accuracy vs FL Round</h3>
               <div class="chart-action-group">
                 <button class="btn btn-secondary btn-sm" onclick="expandChart('accuracy')" title="Expand high-resolution view">⤢ Expand</button>
                 <button class="btn btn-secondary btn-sm" onclick="charts.accuracy.exportImage()">Export PNG</button>
@@ -133,9 +321,10 @@
             </div>
           </div>
 
+          <!-- Chart 2: Loss -->
           <div class="card chart-card">
             <div class="chart-header">
-              <h3>Loss vs FL Round</h3>
+              <h3>Generalization Loss vs FL Round</h3>
               <div class="chart-action-group">
                 <button class="btn btn-secondary btn-sm" onclick="expandChart('loss')" title="Expand high-resolution view">⤢ Expand</button>
                 <button class="btn btn-secondary btn-sm" onclick="charts.loss.exportImage()">Export PNG</button>
@@ -146,6 +335,35 @@
             </div>
           </div>
 
+          <!-- Chart 3: Consensus Alignment Cosine Similarity -->
+          <div class="card chart-card">
+            <div class="chart-header">
+              <h3>Consensus Cosine Alignment vs Round</h3>
+              <div class="chart-action-group">
+                <button class="btn btn-secondary btn-sm" onclick="expandChart('cosineSim')" title="Expand high-resolution view">⤢ Expand</button>
+                <button class="btn btn-secondary btn-sm" onclick="charts.cosineSim.exportImage()">Export PNG</button>
+              </div>
+            </div>
+            <div class="chart-canvas-container">
+              <canvas id="chart-cosine-sim" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 4: Client Gradient L2 Norms -->
+          <div class="card chart-card">
+            <div class="chart-header">
+              <h3>Client Gradient L2 Norm ||Δw|| vs Round</h3>
+              <div class="chart-action-group">
+                <button class="btn btn-secondary btn-sm" onclick="expandChart('gradientNorms')" title="Expand high-resolution view">⤢ Expand</button>
+                <button class="btn btn-secondary btn-sm" onclick="charts.gradientNorms.exportImage()">Export PNG</button>
+              </div>
+            </div>
+            <div class="chart-canvas-container">
+              <canvas id="chart-gradient-norms" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 5: Accepted Updates vs Round -->
           <div class="card chart-card">
             <div class="chart-header">
               <h3>Client Participation (Accepted Updates)</h3>
@@ -159,6 +377,7 @@
             </div>
           </div>
 
+          <!-- Chart 6: Cumulative Blockchain Growth -->
           <div class="card chart-card">
             <div class="chart-header">
               <h3>Cumulative Blockchain Growth</h3>
@@ -169,6 +388,20 @@
             </div>
             <div class="chart-canvas-container">
               <canvas id="chart-blockchain" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 7: Admission & Stage Latency Profile vs FL Round -->
+          <div class="card chart-card">
+            <div class="chart-header">
+              <h3>Admission & Stage Latency vs Round</h3>
+              <div class="chart-action-group">
+                <button class="btn btn-secondary btn-sm" onclick="expandChart('latency')" title="Expand high-resolution view">⤢ Expand</button>
+                <button class="btn btn-secondary btn-sm" onclick="charts.latency.exportImage()">Export PNG</button>
+              </div>
+            </div>
+            <div class="chart-canvas-container">
+              <canvas id="chart-latency" style="position:absolute; top:0; left:0; width:100%; height:100%; max-width:100%; max-height:100%; display:block;"></canvas>
             </div>
           </div>
         </div>
@@ -220,19 +453,30 @@
 
         <!-- Clients Overview Table -->
         <div class="card" style="margin-bottom: 20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+            <div>
+              <h3 style="margin-bottom:2px;">Federation Clients & Permanent Trust Ledger</h3>
+              <p style="font-size:12.5px; color:var(--text-secondary);">Immutable client scores determine admission eligibility. Scores &lt; 40% are automatically quarantined at the gate.</p>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-secondary btn-sm" onclick="resetAllClientScores()">↺ Reset All Scores</button>
+              <button class="btn btn-secondary btn-sm" onclick="loadClients()">⟳ Refresh</button>
+            </div>
+          </div>
           <div class="table-responsive">
             <table>
               <thead>
                 <tr>
                   <th>Client #</th>
                   <th>Client ID</th>
-                  <th>Ed25519 Public Key</th>
-                  <th>Dataset Samples</th>
+                  <th>Ed25519 Identity</th>
+                  <th>Samples</th>
                   <th>Status</th>
-                  <th>Local Loss</th>
-                  <th>||Δw|| (L2 Norm)</th>
-                  <th>Consensus Alignment</th>
-                  <th>Commitment</th>
+                  <th>Trust Score (Permanent)</th>
+                  <th>Risk Tier</th>
+                  <th>Loss</th>
+                  <th>||Δw||</th>
+                  <th>Alignment</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -337,6 +581,14 @@
                 <button class="btn btn-primary" id="btn-resume-exp">▶ Resume</button>
                 <button class="btn btn-danger" id="btn-stop-exp">⏹ Stop</button>
                 <button class="btn btn-secondary" id="btn-reset-exp">↺ Reset</button>
+                <button class="btn btn-danger" id="btn-inject-malice" style="grid-column: span 2; background: #e11d48; color: #ffffff; border: 1.5px solid var(--ink); box-shadow: var(--shadow-sm); font-weight:700; letter-spacing:0.3px;">☣️ ADD INFECTED CLIENT (MALICIOUS AGENT)</button>
+              </div>
+              <div id="infected-client-status-box" style="margin-top:8px; padding:10px 14px; background:#fff1f2; border:1.5px solid #fda4af; border-radius:12px; font-size:11.5px; display:none;">
+                <div style="display:flex; align-items:center; justify-content:space-between;">
+                  <span style="color:#e11d48; font-weight:700;">☣️ Rogue Node Active:</span>
+                  <span id="infected-client-badge" class="badge badge-danger">1 INFECTED</span>
+                </div>
+                <div style="color:var(--text-secondary); margin-top:3px; font-size:11px;">Randomly injects poisoned gradients, broken weights, and tampered commitments during rounds.</div>
               </div>
             </div>
           </div>
@@ -376,8 +628,8 @@
         <!-- Header + Verify Button -->
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px;">
           <div>
-            <h2 style="font-size:18px; font-weight:700; color:#f8fafc; margin-bottom:4px;">⛓ Distributed Blockchain Ledger</h2>
-            <p style="font-size:12.5px; color:#64748b; max-width:620px; line-height:1.6;">
+            <h2 style="font-size:18px; font-weight:800; color:var(--text-primary); margin-bottom:4px;">⛓ Distributed Blockchain Ledger</h2>
+            <p style="font-size:12.5px; color:var(--text-secondary); max-width:620px; line-height:1.6; font-weight:600;">
               Cryptographically chained SHA-256 blocks recording every FL event — Round Start, Update Submission, FedAvg Aggregation, Round End — across all replicated ledger nodes with quorum consensus.
             </p>
           </div>
@@ -503,36 +755,53 @@
         <!-- Live Inference Section -->
         <div style="display: grid; grid-template-columns: 1fr 340px; gap: 20px;">
           <div class="card">
-            <h3>Fashion-MNIST Interactive Test Gallery</h3>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
+            <h3 style="margin-bottom:14px;">Fashion-MNIST Interactive Test Gallery</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px; margin-bottom:16px;">
               Click any real test image to evaluate it with the trained global model weights live:
             </p>
             <div class="samples-grid" id="samples-gallery">
               <!-- Dynamically populated 28x28 sample items -->
             </div>
 
-            <div style="margin-top: 20px; display: flex; align-items: center; gap: 12px;">
+            <div style="margin-top: 20px; display: flex; align-items: center; gap: 12px; border-top: 1px solid #1e293b; padding-top: 16px;">
               <span style="font-size: 13px; color: var(--text-secondary);">Or test test-set index (0–9999):</span>
               <input type="number" id="input-sample-idx" value="42" min="0" max="9999" style="width: 100px;">
               <button class="btn btn-secondary btn-sm" id="btn-manual-infer">Evaluate Sample</button>
             </div>
           </div>
 
-          <!-- Inference Results Box -->
-          <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-              <h3>Live Prediction</h3>
-              <span class="badge" id="inf-match-badge">—</span>
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <!-- Inference Results Box -->
+            <div class="card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="margin:0;">Live Prediction</h3>
+                <span class="badge" id="inf-match-badge">—</span>
+              </div>
+
+              <div style="font-size: 13px; line-height: 1.8;">
+                <p>Ground Truth Label: <strong id="inf-true-label" style="color:var(--text-primary); font-weight:800;">—</strong></p>
+                <p>Model Prediction: <strong id="inf-pred-label" style="color:var(--accent-purple-dark); font-size:16px; font-weight:800;">—</strong></p>
+                <p>Confidence: <strong id="inf-conf">0.0%</strong></p>
+
+                <h4 style="margin-top: 14px; margin-bottom: 8px; font-size: 12px; color: var(--text-secondary); font-weight:700;">Class Probabilities (Top 5):</h4>
+                <div id="inf-prob-bars">
+                  <!-- Dynamically populated probability bars -->
+                </div>
+              </div>
             </div>
 
-            <div style="font-size: 13px; line-height: 1.8;">
-              <p>Ground Truth Label: <strong id="inf-true-label" style="color:#f8fafc;">—</strong></p>
-              <p>Model Prediction: <strong id="inf-pred-label" style="color:var(--accent-cyan); font-size:16px;">—</strong></p>
-              <p>Confidence: <strong id="inf-conf">0.0%</strong></p>
-
-              <h4 style="margin-top: 14px; margin-bottom: 8px; font-size: 12px; color: var(--text-secondary);">Class Probabilities (Top 5):</h4>
-              <div id="inf-prob-bars">
-                <!-- Dynamically populated probability bars -->
+            <!-- Custom Image Upload Card -->
+            <div class="card" style="border-left: 3px solid var(--accent-purple);">
+              <h3 style="margin:0 0 12px 0;">Upload Custom Image</h3>
+              <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; font-weight:600;">
+                Upload a 28x28 grayscale image of a clothing item for the model to predict.
+              </p>
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <input type="file" id="predict-upload" accept="image/*" style="font-size:12px;">
+                <div style="display:flex; justify-content:center; align-items:center; background:var(--bg-card-subtle); border:1.5px dashed var(--border-subtle); border-radius:10px; padding:10px; height:140px;">
+                  <canvas id="upload-preview" width="28" height="28" style="image-rendering: pixelated; width:128px; height:128px; border:1.5px solid var(--border-dark); border-radius:6px; background:#ffffff;"></canvas>
+                </div>
+                <button class="btn btn-primary btn-sm" id="btn-upload-infer" style="width:100%;">🚀 Predict Uploaded Image</button>
               </div>
             </div>
           </div>
@@ -551,143 +820,299 @@
 
 
       <!-- ══════════════════════════════════════════════════════════════════════
-           TAB 6: SECURITY & ATTACKS
+           TAB 6: SECURITY OPERATIONS CENTER (SOC) & ADMISSION FIREWALL
            ══════════════════════════════════════════════════════════════════════ -->
       <section id="page-security" class="page">
-        <div class="card" style="margin-bottom: 20px;">
-          <h3>Cryptographic Security & Tamper Detection</h3>
-          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 6px;">
-            The BC-FL-SRV security layer validates model updates before ledger inclusion. It cryptographically binds model updates to client identities and round numbers, completely preventing unauthorized participants, forged updates, and in-flight parameter modifications.
-          </p>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px;">
-          <div class="card">
-            <h4 style="color:#fb7185; margin-bottom:8px;">1. Parameter Byte Flipping</h4>
-            <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px;">
-              Attacker modifies 100 model parameter values in-flight after the client has signed.
-            </p>
-            <button class="btn btn-danger btn-sm" id="btn-attack-tamper" style="width:100%;">TEST TAMPERED UPDATE</button>
-          </div>
-
-          <div class="card">
-            <h4 style="color:#f59e0b; margin-bottom:8px;">2. Commitment Forgery</h4>
-            <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px;">
-              Attacker replaces commitment hash with a forged value while attempting to reuse client signature.
-            </p>
-            <button class="btn btn-warning btn-sm" id="btn-attack-forgery" style="width:100%;">TEST INVALID SIGNATURE</button>
-          </div>
-
-          <div class="card">
-            <h4 style="color:#38bdf8; margin-bottom:8px;">3. Unauthorized Client</h4>
-            <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px;">
-              Unregistered entity generates an Ed25519 keypair and attempts to submit an update.
-            </p>
-            <button class="btn btn-primary btn-sm" id="btn-attack-unauth" style="width:100%;">TEST UNAUTHORIZED CLIENT</button>
-          </div>
-
-          <div class="card">
-            <h4 style="color:#a855f7; margin-bottom:8px;">4. Blockchain Block Tampering</h4>
-            <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px;">
-              Direct modification of past committed transaction block on a ledger node.
-            </p>
-            <button class="btn btn-secondary btn-sm" id="btn-attack-block" style="width:100%;">TEST BLOCK TAMPERING</button>
+        <!-- SOC Command Banner -->
+        <div class="card" style="margin-bottom: 20px; background: #fff1f2; border: 1.5px solid var(--ink); border-left: 6px solid #e11d48;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 14px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                <span style="font-size: 22px;">🛡️</span>
+                <h2 style="color: #e11d48; font-size: 20px; font-weight: 800; letter-spacing: 0.5px; margin: 0;">SECURITY OPERATIONS CENTER (SOC) & ADMISSION FIREWALL</h2>
+                <span class="badge badge-danger" style="animation: pulse 2s infinite;">FIREWALL ACTIVE</span>
+              </div>
+              <p style="font-size: 13px; color: var(--text-secondary); max-width: 900px; line-height: 1.6; margin: 0;">
+                The decentralized admission firewall actively monitors incoming updates, intercepts poisoned gradients, catches parameter byte tampering, and quarantines unauthorized nodes. Clients caught performing malicious actions receive <strong style="color:#e11d48;">permanent trust score penalties</strong> and are rejected at the gate before model aggregation.
+              </p>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button class="btn btn-secondary btn-sm" onclick="resetAllClientScores()">↺ Reset All Scores</button>
+              <button class="btn btn-primary btn-sm" onclick="loadSecuritySection()">⟳ Refresh Threat Feed</button>
+            </div>
           </div>
         </div>
 
-        <div class="card">
-          <h3 style="margin-bottom: 10px;">Security Properties & Guarantees</h3>
+        <!-- Real-Time Threat Telemetry HUD -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div class="card kpi-card" style="border-top: 3px solid var(--accent-rose);">
+            <span class="kpi-label">Intercepted Threats</span>
+            <span class="kpi-val" id="soc-threats-count" style="color:var(--accent-rose);">0</span>
+            <span class="kpi-sub">Blocked & logged attacks</span>
+          </div>
+          <div class="card kpi-card" style="border-top: 3px solid var(--accent-amber);">
+            <span class="kpi-label">Quarantined Nodes</span>
+            <span class="kpi-val" id="soc-quarantined-count" style="color:var(--accent-amber);">0</span>
+            <span class="kpi-sub">Score &lt; 40% (Admission blocked)</span>
+          </div>
+          <div class="card kpi-card" style="border-top: 3px solid var(--accent-emerald);">
+            <span class="kpi-label">Admission Gate Status</span>
+            <span class="kpi-val" style="color:var(--accent-emerald); font-size:22px;">ENFORCING</span>
+            <span class="kpi-sub">G2 + Ed25519 + SHA-256</span>
+          </div>
+          <div class="card kpi-card" style="border-top: 3px solid var(--accent-cyan);">
+            <span class="kpi-label">Cryptographic Integrity</span>
+            <span class="kpi-val" style="color:var(--accent-cyan); font-size:22px;">100% SECURE</span>
+            <span class="kpi-sub">Replicated Merkle ledger</span>
+          </div>
+        </div>
+
+        <!-- Attacker Client Target Selector -->
+        <div class="card" style="margin-bottom: 24px; background: var(--bg-card); border: var(--card-border);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 18px;">🎯</span>
+              <div>
+                <strong style="color: var(--text-primary); font-size: 13.5px;">Select Client to Launch Attack Vector:</strong>
+                <span style="font-size: 12px; color: var(--text-muted); display: block;">The system will identify this exact client as the attacker, catch them at the admission gate, and slash their score.</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <select id="select-attacker-client" style="padding: 8px 14px; background: #ffffff; border: 1.5px solid var(--border-color); border-radius: 12px; color: var(--text-primary); font-size: 12.5px; font-weight: 600; font-family: inherit;">
+                <option value="">Auto-select (Infected or First Client)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Forensic Interception Result Banner -->
+        <div id="attack-result-banner" class="card" style="display: none; margin-bottom: 24px; border: var(--card-border); border-left: 6px solid #e11d48; background: #ffffff;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 26px;">🚨</span>
+              <div>
+                <h3 id="attack-banner-title" style="color: #e11d48; margin: 0; font-size: 17px; font-weight: 800;">ATTACK INTERCEPTED & ADVERSARY QUARANTINED</h3>
+                <span id="attack-banner-time" class="mono" style="font-size: 11px; color: var(--text-muted);">Timestamp</span>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="document.getElementById('attack-result-banner').style.display='none'">✕ Dismiss</button>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-top: 14px; padding: 14px; background: var(--bg-card-subtle); border-radius: 14px; border: 1px solid var(--border-subtle);">
+            <div>
+              <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Attacker Identity:</span>
+              <div id="banner-attacker-id" class="mono" style="font-size: 13px; color: #e11d48; font-weight: 700; margin-top: 2px;">—</div>
+            </div>
+            <div>
+              <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Caught & Identified Entity:</span>
+              <div id="banner-caught-id" class="mono" style="font-size: 13px; color: #0284c7; font-weight: 700; margin-top: 2px;">—</div>
+            </div>
+            <div>
+              <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Defense Mechanism:</span>
+              <div id="banner-defense-layer" style="font-size: 12.5px; color: #059669; font-weight: 600; margin-top: 2px;">—</div>
+            </div>
+            <div>
+              <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Permanent Score Impact:</span>
+              <div id="banner-trust-impact" style="font-size: 13px; color: #d97706; font-weight: 700; margin-top: 2px;">—</div>
+            </div>
+          </div>
+
+          <div id="banner-forensics-text" style="margin-top: 10px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.5;"></div>
+        </div>
+
+        <!-- 6 Interactive Threat Vectors -->
+        <h3 style="margin-bottom: 14px; font-size: 16px; display:flex; align-items:center; gap:8px;">
+          <span>⚡ Simulated Threat Injection Vectors</span>
+          <span style="font-size: 12px; color: var(--text-muted); font-weight: normal;">(Click to execute attack against defense firewall)</span>
+        </h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <!-- Vector 1: MITM Byte Tampering -->
+          <div class="card threat-card" style="border-top: 3px solid #fb7185;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <h4 style="color:#fb7185; margin:0;">🚨 Parameter Byte Flipping (MITM)</h4>
+              <span class="badge badge-danger">-40% TRUST</span>
+            </div>
+            <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
+              Simulates a Man-in-the-Middle altering 100 model parameters post-signing. Tests SHA-256 domain-separated commitment firewall.
+            </p>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>Update Commitment Verification (SHA-256)</strong></div>
+            <button class="btn btn-danger btn-sm" id="btn-attack-tamper" style="width:100%;">⚡ EXECUTE MITM TAMPERING</button>
+          </div>
+
+          <!-- Vector 2: Commitment Forgery -->
+          <div class="card threat-card" style="border-top: 3px solid #f59e0b;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <h4 style="color:#f59e0b; margin:0;">🔑 Signature & Hash Forgery</h4>
+              <span class="badge badge-warning">-35% TRUST</span>
+            </div>
+            <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
+              Attacker forges commitment hash while attempting to reuse client signature. Tests Ed25519 cryptographic binding.
+            </p>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>Ed25519 Curve25519 Signature Verification</strong></div>
+            <button class="btn btn-warning btn-sm" id="btn-attack-forgery" style="width:100%;">⚡ EXECUTE FORGERY ATTACK</button>
+          </div>
+
+          <!-- Vector 3: Rogue Identity -->
+          <div class="card threat-card" style="border-top: 3px solid #38bdf8;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <h4 style="color:#38bdf8; margin:0;">👤 Sybil / Rogue Infiltration</h4>
+              <span class="badge badge-info">-50% TRUST</span>
+            </div>
+            <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
+              Rogue unauthorized entity submits update with unregistered keypair. Tests permissioned admission registry authorization.
+            </p>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>Admission Registry Key Authorization</strong></div>
+            <button class="btn btn-primary btn-sm" id="btn-attack-unauth" style="width:100%;">⚡ EXECUTE ROGUE IDENTITY</button>
+          </div>
+
+          <!-- Vector 4: Blockchain Tampering -->
+          <div class="card threat-card" style="border-top: 3px solid #a855f7;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <h4 style="color:#a855f7; margin:0;">⛓ Historical Ledger Rewrite</h4>
+              <span class="badge badge-danger">-100% QUARANTINED</span>
+            </div>
+            <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
+              Direct mutation of past committed block participant list on ledger node 0. Tests cryptographic prev_hash integrity.
+            </p>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>Cryptographic Hash Chaining (prev_hash)</strong></div>
+            <button class="btn btn-secondary btn-sm" id="btn-attack-block" style="width:100%;">⚡ EXECUTE LEDGER REWRITE</button>
+          </div>
+
+          <!-- Vector 5: Gradient Direction Poisoning -->
+          <div class="card threat-card" style="border-top: 3px solid #e11d48;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <h4 style="color:#e11d48; margin:0;">☣️ Directional Gradient Poisoning</h4>
+              <span class="badge badge-danger">-25% TRUST</span>
+            </div>
+            <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
+              Inverts and amplifies local gradient vector (-3.0x) to steer model away from convergence. Tests G2 Median-Cosine filter.
+            </p>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>G2 Multi-Round Cosine Defense & Reputation</strong></div>
+            <button class="btn btn-danger btn-sm" id="btn-attack-poison" style="width:100%;">⚡ EXECUTE GRADIENT POISONING</button>
+          </div>
+
+          <!-- Vector 6: Exploding Norm Anomaly -->
+          <div class="card threat-card" style="border-top: 3px solid #f97316;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <h4 style="color:#f97316; margin:0;">💥 Exploding Norm Anomaly</h4>
+              <span class="badge badge-warning">-30% TRUST</span>
+            </div>
+            <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
+              Submits extreme update norm (L2 = 25.0 > 15.0 max limit) to destabilize global weights. Tests statistical anomaly gate.
+            </p>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Defense: <strong>Dynamic Statistical L2 Norm Anomaly Firewall</strong></div>
+            <button class="btn btn-warning btn-sm" id="btn-attack-norm" style="width:100%;">⚡ EXECUTE EXPLODING NORM</button>
+          </div>
+        </div>
+
+        <!-- Live Threat Interception Feed & Forensics Log Table -->
+        <div class="card" style="margin-bottom: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <h3 style="margin-bottom: 2px;">Live Threat Interception Feed & Forensics</h3>
+              <p style="font-size: 12.5px; color: var(--text-secondary);">Audit record of all intercepted malicious attacks, identified attackers, and score slashes.</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="loadSecuritySection()">⟳ Refresh Feed</button>
+          </div>
           <div class="table-responsive">
             <table>
               <thead>
                 <tr>
-                  <th>Attack Scenario</th>
+                  <th>Incident ID</th>
+                  <th>Time</th>
+                  <th>Attacker Client ID</th>
+                  <th>Caught Entity</th>
+                  <th>Threat Vector</th>
+                  <th>Defense Layer</th>
+                  <th>Score Impact</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="threat-incidents-body">
+                <!-- Dynamically populated from /api/security/incidents -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Defense Layer Matrix -->
+        <div class="card">
+          <h3 style="margin-bottom: 10px;">Security Defense Layer Specification</h3>
+          <div class="table-responsive">
+            <table style="width:100%;">
+              <thead>
+                <tr style="text-align:left;">
+                  <th style="padding:12px;">Attack Vector</th>
                   <th>Defense Mechanism</th>
                   <th>Cryptographic Primitive</th>
-                  <th>Verification Outcome</th>
+                  <th>Permanent Consequence</th>
+                  <th>Enforcement Gate</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td><strong>Model Weight Modification</strong></td>
+                  <td style="padding:12px;"><strong>Parameter Byte-Flipping</strong></td>
                   <td>Update Commitment Check</td>
-                  <td>SHA-256 with Domain Separation</td>
-                  <td><span class="badge badge-success">CAUGHT (rejected_commit)</span></td>
+                  <td>SHA-256 Domain-Separated Hash</td>
+                  <td><span class="badge badge-danger">-40% Score Slash</span></td>
+                  <td><span class="badge badge-success">Pre-Admission Gate</span></td>
                 </tr>
                 <tr>
-                  <td><strong>Signature Impersonation</strong></td>
+                  <td style="padding:12px;"><strong>Signature Impersonation</strong></td>
                   <td>Identity Signature Verification</td>
                   <td>Ed25519 Public Key Cryptography</td>
-                  <td><span class="badge badge-success">CAUGHT (rejected_sig)</span></td>
+                  <td><span class="badge badge-danger">-35% Score Slash</span></td>
+                  <td><span class="badge badge-success">Pre-Admission Gate</span></td>
                 </tr>
                 <tr>
-                  <td><strong>Sybil / Rogue Nodes</strong></td>
+                  <td style="padding:12px;"><strong>Sybil / Rogue Nodes</strong></td>
                   <td>Admission Registry Authorization</td>
-                  <td>Deterministic Key Identity</td>
-                  <td><span class="badge badge-success">CAUGHT (rejected_unknown)</span></td>
+                  <td>Permissioned Keypair Registry</td>
+                  <td><span class="badge badge-danger">-50% Score Slash</span></td>
+                  <td><span class="badge badge-success">Pre-Admission Gate</span></td>
                 </tr>
                 <tr>
-                  <td><strong>Historical Ledger Rewrite</strong></td>
+                  <td style="padding:12px;"><strong>Historical Ledger Rewrite</strong></td>
                   <td>Cryptographic Hash Chaining</td>
                   <td>Append-only SHA-256 prev_hash links</td>
-                  <td><span class="badge badge-success">CAUGHT (verify_chain failure)</span></td>
+                  <td><span class="badge badge-danger">100% Quarantine</span></td>
+                  <td><span class="badge badge-success">Consensus Gate</span></td>
                 </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-
-      <!-- ══════════════════════════════════════════════════════════════════════
-           TAB 7: EXPERIMENTS BENCHMARK
-           ══════════════════════════════════════════════════════════════════════ -->
-      <section id="page-experiments" class="page">
-        <div class="card" style="margin-bottom: 16px;">
-          <h3>Historical Experiments & Research Benchmarks</h3>
-          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
-            Compare reproducibility, convergence accuracy, loss, and blockchain block heights across parameter settings (e.g. Non-IID Dirichlet α skew, client counts, learning rates).
-          </p>
-        </div>
-
-        <div class="card">
-          <div class="table-responsive">
-            <table>
-              <thead>
                 <tr>
-                  <th>Experiment ID</th>
-                  <th>Timestamp</th>
-                  <th>Clients</th>
-                  <th>Rounds</th>
-                  <th>Alpha (α)</th>
-                  <th>Final Accuracy</th>
-                  <th>Final Loss</th>
-                  <th>Blocks</th>
-                  <th>Ledger Status</th>
+                  <td style="padding:12px;"><strong>Directional Poisoning</strong></td>
+                  <td>G2 Cosine Consensus Filter</td>
+                  <td>Median Pairwise Cosine Alignment</td>
+                  <td><span class="badge badge-danger">-25% Score Slash</span></td>
+                  <td><span class="badge badge-success">Aggregation Gate</span></td>
                 </tr>
-              </thead>
-              <tbody id="experiments-table-body">
-                <!-- Dynamically populated -->
+                <tr>
+                  <td style="padding:12px;"><strong>Exploding Norm Anomaly</strong></td>
+                  <td>Dynamic L2 Norm Firewall</td>
+                  <td>Statistical Threshold Clipping</td>
+                  <td><span class="badge badge-danger">-30% Score Slash</span></td>
+                  <td><span class="badge badge-success">Pre-Admission Gate</span></td>
+                </tr>
               </tbody>
             </table>
           </div>
         </div>
       </section>
 
-
       <!-- ══════════════════════════════════════════════════════════════════════
-           TAB 8: LIVE EVENT LOGS
+           TAB 7: LIVE EVENT LOGS
            ══════════════════════════════════════════════════════════════════════ -->
       <section id="page-logs" class="page">
         <div class="card" style="margin-bottom: 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
           <div>
-            <h3>Real-Time System & Application Events</h3>
+            <h3 style="margin-bottom:2px;">Real-Time System & Application Events</h3>
             <p style="font-size: 13px; color: var(--text-secondary);">
               Streaming execution logs for client training, cryptographic verification, quorum consensus, and FedAvg aggregation.
             </p>
           </div>
-          <div style="display:flex; gap:8px; align-items:center;">
-            <input type="text" id="log-search-input" placeholder="Search logs..." style="padding:5px 10px; font-size:12px; width:180px;" oninput="filterLogs()">
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+            <input type="text" id="log-search-input" placeholder="Search logs..." style="padding:5px 10px; font-size:12px; width:170px;" oninput="filterLogs()">
+            <button class="btn btn-secondary btn-sm" onclick="expandAllLogs()">▼ Expand All</button>
+            <button class="btn btn-secondary btn-sm" onclick="collapseAllLogs()">▲ Collapse All</button>
             <button class="btn btn-secondary btn-sm" onclick="loadLogs()">⟳ Refresh Logs</button>
             <button class="btn btn-secondary btn-sm" onclick="clearLogsView()">🧹 Clear View</button>
           </div>
@@ -710,53 +1135,6 @@
       </section>
 
 
-      <!-- ══════════════════════════════════════════════════════════════════════
-           TAB 9: BC-FL-SRV RESEARCH
-           ══════════════════════════════════════════════════════════════════════ -->
-      <section id="page-research" class="page">
-        <div class="card" style="margin-bottom: 20px;">
-          <h2 style="color:var(--accent-cyan); margin-bottom: 8px;">BC-FL-SRV: Verifiable Admission Decisions for Federated Learning</h2>
-          <p style="font-size: 13.5px; line-height: 1.7; color: var(--text-secondary);">
-            In privacy-preserving federated learning with secure aggregation, the central server deliberately cannot inspect individual client updates. This creates an <strong>accountability hole (AG1)</strong>: the server can claim it admitted 40 honest clients and rejected 10 outliers, but no external party can verify whether that claim is true.
-          </p>
-          <p style="font-size: 13.5px; line-height: 1.7; color: var(--text-secondary); margin-top: 8px;">
-            BC-FL-SRV solves this by introducing a rotating committee that inspects <em>bounded evidence</em> and co-signs admission sets into an append-only Merkle transcript, enabling any third-party auditor to verify admission integrity in logarithmic time.
-          </p>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
-          <div class="card" style="border-left: 3px solid var(--accent-emerald);">
-            <h3 style="color:#34d399; margin-bottom: 8px;">1. Research Subsystem (Admission Verification)</h3>
-            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
-              The foundational research verified in E1–E5, G2, and G3:
-            </p>
-            <ul style="margin-left: 18px; margin-top: 8px; font-size: 12.5px; line-height: 1.7; color: var(--text-secondary);">
-              <li><strong>Merkle Transcript:</strong> Append-only log providing inclusion proofs and non-equivocation (AG3).</li>
-              <li><strong>Auditor:</strong> Evaluates admission rules in O(log n) time without accessing raw weights.</li>
-              <li><strong>Rotating Committee:</strong> Deterministic sortition seeded from previous transcript root.</li>
-              <li><strong>Bounded Evidence:</strong> Discloses minimal metadata without leaking training inputs.</li>
-            </ul>
-          </div>
-
-          <div class="card" style="border-left: 3px solid var(--accent-cyan);">
-            <h3 style="color:#38bdf8; margin-bottom: 8px;">2. Demonstration Subsystem (Decentralized FL)</h3>
-            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
-              The end-to-end interactive training platform built here:
-            </p>
-            <ul style="margin-left: 18px; margin-top: 8px; font-size: 12.5px; line-height: 1.7; color: var(--text-secondary);">
-              <li><strong>Multiple FL Clients:</strong> Training PyTorch SmallCNN models locally on non-IID shards.</li>
-              <li><strong>Ed25519 Signatures:</strong> Authenticating every update commitment.</li>
-              <li><strong>Distributed Ledger:</strong> Multi-node ledger with quorum consensus recording round events.</li>
-              <li><strong>Real Model Inference:</strong> Generating a verified global model for Fashion-MNIST classification.</li>
-            </ul>
-          </div>
-        </div>
-
-        <h3 style="margin-bottom: 14px;">Original Research Experiments (E1–E5):</h3>
-        <div id="research-exp-cards">
-          <!-- Dynamically populated from /api/research -->
-        </div>
-      </section>
 
     </main>
   </div>
@@ -809,7 +1187,65 @@
     </div>
   </div>
 
-  <script src="/static/charts.js?v=2.0.2"></script>
-  <script src="/static/app.js?v=2.0.2"></script>
+  <!-- ── Live Model Test Set Verification Modal ─────────────────────────────── -->
+  <div class="modal-overlay" id="model-verify-modal">
+    <div class="modal-content modal-content-lg">
+      <div class="modal-header">
+        <div>
+          <h3 style="color:var(--text-primary); margin:0;">🔬 Live Model Evaluation & Test Set Verification</h3>
+          <span style="font-size:11.5px; color:var(--accent-cyan); text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">Ground-Truth PyTorch Forward Pass • 10,000 Fashion-MNIST Samples</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button class="btn btn-secondary btn-sm" onclick="verifyModelTestSet()">⟳ Re-Verify</button>
+          <button class="close-btn" onclick="document.getElementById('model-verify-modal').classList.remove('active')">×</button>
+        </div>
+      </div>
+      <div id="model-verify-body" style="padding: 10px 0;">
+        <!-- Injected dynamically by verifyModelTestSet() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Full Academic System Audit Modal ────────────────────────────────────── -->
+  <div class="modal-overlay" id="system-audit-modal">
+    <div class="modal-content modal-content-lg">
+      <div class="modal-header">
+        <div>
+          <h3 style="color:var(--text-primary); margin:0;">📜 Comprehensive Academic System Audit</h3>
+          <span style="font-size:11.5px; color:var(--accent-emerald); text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">5-Pillar Cryptographic & Empirical Verification Certificate</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button class="btn btn-secondary btn-sm" onclick="downloadAuditReport()">📥 Download Certificate</button>
+          <button class="btn btn-secondary btn-sm" onclick="runAcademicAudit()">⟳ Re-Audit</button>
+          <button class="close-btn" onclick="document.getElementById('system-audit-modal').classList.remove('active')">×</button>
+        </div>
+      </div>
+      <div id="system-audit-body" style="padding: 10px 0;">
+        <!-- Injected dynamically by runAcademicAudit() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Stage Latency Profile & Client Admission Audit Modal ─────────────────── -->
+  <div class="modal-overlay" id="latency-modal">
+    <div class="modal-content modal-content-lg">
+      <div class="modal-header">
+        <div>
+          <h3 style="color:var(--text-primary); margin:0;">⏱️ FL Pipeline Stage Latencies & Admission Screening Profile</h3>
+          <span style="font-size:11.5px; color:#06b6d4; text-transform:uppercase; letter-spacing:0.05em; font-weight:600;">Empirical Stage Benchmarks (t_admission, t_train, t_comm, t_verify, t_consensus, t_agg)</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button class="btn btn-secondary btn-sm" onclick="showLatencyModal()">⟳ Refresh</button>
+          <button class="close-btn" onclick="document.getElementById('latency-modal').classList.remove('active')">×</button>
+        </div>
+      </div>
+      <div id="latency-modal-body" style="padding: 10px 0;">
+        <!-- Populated dynamically by showLatencyModal() -->
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/charts.js?v=2.2.0"></script>
+  <script src="/static/app.js?v=2.2.0"></script>
 </body>
 </html>

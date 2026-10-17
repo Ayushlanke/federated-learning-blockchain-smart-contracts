@@ -73,6 +73,7 @@ __all__ = [
 
 G2_WARMUP = 3        # participations before the reputation test applies
 G2_MAD_FACTOR = 3.0  # reject if reputation < median - k * MAD
+G2_TRUST_THRESHOLD = 0.4  # automatic rejection if persistent trust score < 0.4
 
 
 def g2_rule_id(warmup: int = G2_WARMUP, mad_factor: float = G2_MAD_FACTOR) -> str:
@@ -159,6 +160,7 @@ def apply_g2_rule(
     warmup: int = G2_WARMUP,
     mad_factor: float = G2_MAD_FACTOR,
     update_state: bool = True,
+    trust_scores: Optional[Mapping[str, float]] = None,
 ) -> Tuple[AdmissionDecision, Dict[str, float]]:
     """Apply G2 and return the decision plus this round's scores.
 
@@ -180,11 +182,22 @@ def apply_g2_rule(
     if not client_ids:
         return AdmissionDecision((), (), g2_rule_id(warmup, mad_factor), {}), {}
 
-    # --- Test 1: magnitude. Unchanged from G1; catches scaling and replacement. ---
+    # --- Test 0: Persistent Trust Score. Automatic rejection for untrustworthy clients. ---
+    rejected = set()
+    thresholds: Dict[str, float] = {}
+    if trust_scores:
+        for cid in client_ids:
+            score = trust_scores.get(cid, 1.0)
+            if score < G2_TRUST_THRESHOLD:
+                rejected.add(cid)
+
+    # --- Test 1: magnitude. Catches scaling and model replacement attacks. ---
     norms = np.array([evidences[c].norm or 0.0 for c in client_ids])
-    norm_threshold = float(np.median(norms)) * NORM_FACTOR
-    rejected = {c for c, n in zip(client_ids, norms) if n > norm_threshold}
-    thresholds: Dict[str, float] = {"norm": norm_threshold}
+    norm_threshold = max(float(np.median(norms)) * 3.0, 15.0)
+    rejected |= {c for c, n in zip(client_ids, norms) if n > norm_threshold}
+    thresholds["norm"] = norm_threshold
+    if trust_scores:
+        thresholds["trust_threshold"] = G2_TRUST_THRESHOLD
 
     # --- Test 2: direction, on the unit sphere. Shrinking gains nothing here. ---
     vectors = {c: evidences[c].vector for c in client_ids if evidences[c].vector is not None}
@@ -209,7 +222,10 @@ def apply_g2_rule(
         cutoff = median - mad_factor * max(mad, 1e-6)
         thresholds["reputation"] = cutoff
         thresholds["reputation_median"] = median
-        rejected |= {c for c, r in zip(eligible, reputations) if r < cutoff}
+        # Only reject if MAD indicates true divergence (MAD > 0.06) and reputation is low (< 0.25)
+        # Prevents false positive rejection when all clients are honest and tightly clustered
+        if mad > 0.06:
+            rejected |= {c for c, r in zip(eligible, reputations) if r < cutoff and r < 0.25}
 
     admitted = tuple(c for c in client_ids if c not in rejected)
     decision = AdmissionDecision(
